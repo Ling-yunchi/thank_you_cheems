@@ -47,6 +47,7 @@
 /thank you cheems/ZERO_CHECK.vcxproj.filters
 /thank you cheems/cmake_install.cmake
 /thank you cheems/engine
+/thank you cheems/save.dat
 
 *.vcxproj
 *.vcxproj.filters
