@@ -60,6 +60,10 @@ global_(Global::getInstance())
 {
 }
 
+GameScene::~GameScene()
+{
+}
+
 cocos2d::Scene* GameScene::creatScsene()
 {
 	return  GameScene::create();
