@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+/thank you cheems/.cocos-project.json
+/thank you cheems/.vs
+/thank you cheems/cocos2d
+/thank you cheems/proj.android
+/thank you cheems/proj.ios_mac
+/thank you cheems/proj.linux
+/thank you cheems/proj.win32
+/thank you cheems/out
