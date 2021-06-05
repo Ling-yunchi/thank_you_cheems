@@ -35,7 +35,7 @@ private:
 public:
 	GameScene();
 	~GameScene();
-	static cocos2d::Scene* creatScsene();
+	static cocos2d::Scene* createScene();
 	bool init() override;
 	
 	CREATE_FUNC(GameScene);

@@ -1,5 +1,20 @@
 #include "GameScene.h"
 
+void GameScene::loadMap()
+{
+	
+}
+
+void GameScene::creatSprites()
+{
+	
+}
+
+void GameScene::creatMenu()
+{
+	
+}
+
 void GameScene::update(float delta)
 {
 	for (auto& key : keyMap) {
@@ -64,7 +79,7 @@ GameScene::~GameScene()
 {
 }
 
-cocos2d::Scene* GameScene::creatScsene()
+cocos2d::Scene* GameScene::createScene()
 {
 	return  GameScene::create();
 }
@@ -74,8 +89,12 @@ bool GameScene::init()
 	if (!Scene::initWithPhysics())
 		return false;
 
-	
+	loadMap();
+	creatSprites();
+	creatMenu();
 
 	//添加调度器,使每一帧都进入update函数
 	this->scheduleUpdate();
+
+	return true;
 }
