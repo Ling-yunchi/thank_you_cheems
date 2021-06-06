@@ -1,16 +1,18 @@
 #include "SaveChooseScene.h"
 #include <fstream>
+
+#include "Scene/MainMenuScene/MainMenuScene.h"
 using namespace std;
 using namespace cocos2d;
 
 void SaveChooseScene::file() {
 	saveCount = 0;
 	fstream saveFile("save.dat", ios::in | ios::out);
-	if (saveFile.peek() != EOF) {
+	if (!saveFile) {
 		fclose(fopen("save.dat", "w"));//创建文件
 		saveFile.open("save.dat");
 	}
-	while (!saveFile.eof()) {
+	while (saveFile.peek() != EOF) {
 		saveFile.read(reinterpret_cast<char*>(&saves[saveCount++]), sizeof(Save));
 	}
 	saveFile.close();
@@ -22,7 +24,7 @@ void SaveChooseScene::creatButton() {
 	TTFConfig config("fonts/Marker Felt.ttf", 60);
 	for (int i = 0; i < saveNumMax; i++) {
 		auto btn = ui::Button::create("Button_Normal.png", "Button_Press.png", "Button_Disable.png");
-		auto label = Label::createWithTTF(config, i<saveCount?saves[i].getName():"null");
+		auto label = Label::createWithTTF(config, i < saveCount ? saves[i].getName() : "null");
 		label->setTextColor(Color4B::BLACK);
 		btn->setTitleLabel(label);
 		buttons_[i] = btn;
@@ -32,14 +34,25 @@ void SaveChooseScene::creatButton() {
 		buttons_[i]->setScale9Enabled(true);
 		buttons_[i]->setContentSize(Size(500, 100));
 		buttons_[i]->setPosition(Vec2(540, 600 - 130 * i));
-		buttons_[i]->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type){
+		buttons_[i]->setTag(i);
+		buttons_[i]->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 			switch (type)
 			{
 			case ui::Widget::TouchEventType::BEGAN:
 				break;
-			case ui::Widget::TouchEventType::ENDED:
-				//TODO checkbox
+			case ui::Widget::TouchEventType::ENDED: {
+				int num = dynamic_cast<ui::Button*>(sender)->getTag();
+				if(num<saveCount) {
+					Global::getInstance()->saveName = saves[num].getName();
+					confirm_ = SaveChooseConfirmScene::createScene();
+					Director::getInstance()->pushScene(confirm_);
+				}
+				else {
+					create_ = SaveCreateScene::createScene();
+					Director::getInstance()->pushScene(create_);
+				}
 				break;
+			}
 			default:
 				break;
 			}
@@ -57,13 +70,13 @@ void SaveChooseScene::creatButton() {
 	label->setTextColor(Color4B::BLACK);
 	back->setTitleLabel(label);
 	back->setPosition(Vec2(540, 70));
-	back->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type){
+	back->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			Director::getInstance()->popScene();
+			Director::getInstance()->replaceScene(MainMenuScene::createScene());
 			break;
 		default:
 			break;
@@ -83,7 +96,7 @@ bool SaveChooseScene::init() {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto startBackground = Sprite::create("bg169.jpg");
+	auto startBackground = Sprite::create("bg.jpg");
 	startBackground->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 	float winw = visibleSize.width;
 	float winh = visibleSize.height;

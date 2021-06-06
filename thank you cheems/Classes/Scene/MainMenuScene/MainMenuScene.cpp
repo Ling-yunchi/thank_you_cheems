@@ -41,7 +41,7 @@ bool MainMenuScene::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
-    auto startBackground = Sprite::create("startbg169.jpg");
+    auto startBackground = Sprite::create("startBackground.jpg");
     startBackground->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     float winw = visibleSize.width; //获取屏幕宽度
     float winh = visibleSize.height;//获取屏幕高度
@@ -82,6 +82,8 @@ bool MainMenuScene::init()
     auto optionItem = MenuItemLabel::create(option, [&](Ref* sender) {
 	    log("options");
     	//TODO OptionScene
+        OptionsScene_ = OptionsScene::createScene();
+        Director::getInstance()->pushScene(OptionsScene_);
     });	
     auto closeItem = MenuItemLabel::create(close, [&](Ref* sender) {
 	    log("close");

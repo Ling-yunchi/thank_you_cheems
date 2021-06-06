@@ -3,6 +3,8 @@
  * @author wr
  */
 #pragma once
+#include <string>
+
 #include "UserInformation.h"
 
 /**
@@ -14,11 +16,13 @@ class Global
 {
 public:
 	static Global* getInstance();
+	bool displayStats;
+	UserInformation* userInfo_;
+	std::string saveName;
 private:
 	Global();
 	~Global();
 	//µ¥ÀýÄ£Ê½
 	static  Global* instance_;
-	UserInformation* userInfo_;
 };
 

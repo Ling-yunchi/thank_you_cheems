@@ -13,14 +13,8 @@ bool HelpScene::init()
 		return false;
 
 	visibleSize_ = Director::getInstance()->getVisibleSize();
-	auto startBackground = Sprite::create("bg169.jpg");
+	auto startBackground = Sprite::create("bg2.jpeg");
 	startBackground->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 2));
-	float winw = visibleSize_.width; //获取屏幕宽度
-	float winh = visibleSize_.height;//获取屏幕高度
-	float spx = startBackground->getTextureRect().getMaxX();
-	float spy = startBackground->getTextureRect().getMaxY();
-	startBackground->setScaleX(winw / spx); //设置精灵宽度缩放比例
-	startBackground->setScaleY(winh / spy);
 	this->addChild(startBackground, 1);
 	
 	createLabel();

@@ -10,7 +10,7 @@ Global* Global::getInstance()
 }
 
 Global::Global()
-	:userInfo_(new UserInformation())
+	:userInfo_(new UserInformation()), displayStats(true)
 {
 }
 
