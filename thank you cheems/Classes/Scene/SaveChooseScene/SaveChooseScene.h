@@ -15,7 +15,7 @@ private:
 	int saveCount;
 	std::array<cocos2d::ui::Button*, saveNumMax+1> buttons_;
 public:
-	static cocos2d::Scene* creatScene();
+	static cocos2d::Scene* createScene();
 
 	bool init() override;
 

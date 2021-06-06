@@ -6,11 +6,11 @@ using namespace cocos2d;
 void SaveChooseScene::file() {
 	saveCount = 0;
 	fstream saveFile("save.dat", ios::in | ios::out);
-	if (!saveFile) {
+	if (saveFile.peek() != EOF) {
 		fclose(fopen("save.dat", "w"));//创建文件
 		saveFile.open("save.dat");
 	}
-	while (saveFile.peek() != EOF) {
+	while (!saveFile.eof()) {
 		saveFile.read(reinterpret_cast<char*>(&saves[saveCount++]), sizeof(Save));
 	}
 	saveFile.close();
@@ -72,7 +72,7 @@ void SaveChooseScene::creatButton() {
 	addChild(back, 999);
 }
 
-cocos2d::Scene* SaveChooseScene::creatScene() {
+cocos2d::Scene* SaveChooseScene::createScene() {
 	return SaveChooseScene::create();
 }
 

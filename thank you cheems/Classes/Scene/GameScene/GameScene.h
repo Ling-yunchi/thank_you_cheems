@@ -4,7 +4,7 @@
  */
 #pragma once
 #include "cocos2d.h"
-#include "../Base/GlobalVariable.h"
+#include "Base/GlobalVariable.h"
 #include <list>
 #include <map>
 
@@ -35,7 +35,7 @@ private:
 public:
 	GameScene();
 	~GameScene();
-	static cocos2d::Scene* createScene();
+	static cocos2d::Scene* creatScsene();
 	bool init() override;
 	
 	CREATE_FUNC(GameScene);

@@ -22,24 +22,24 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "HelloWorldScene.h"
+#include "MainMenuScene.h"
+
 #include "SimpleAudioEngine.h"
-#include "SaveChooseScene.h"
+#include "Scene/SaveChooseScene/SaveChooseScene.h"
 
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* MainMenuScene::createScene()
 {
-    return HelloWorld::create();
+    return MainMenuScene::create();
 }
 
-bool HelloWorld::init()
+bool MainMenuScene::init()
 {
     if ( !Scene::init() )
         return false;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     auto startBackground = Sprite::create("startbg169.jpg");
     startBackground->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
@@ -71,12 +71,22 @@ bool HelloWorld::init()
 
     auto startItem = MenuItemLabel::create(start, [&](Ref* sender){
 	    log("start");
-        scene2 = SaveChooseScene::creatScene();
-        Director::getInstance()->pushScene(scene2);
+        chooseSaveScene_ = SaveChooseScene::createScene();
+        Director::getInstance()->pushScene(chooseSaveScene_);
     });
-    auto helpItem = MenuItemLabel::create(help, [&](Ref* sender) {log("help");});
-    auto optionItem = MenuItemLabel::create(option, [&](Ref* sender) {log("options");});
-    auto closeItem = MenuItemLabel::create(close, [&](Ref* sender) {log("close");Director::getInstance()->end();});
+    auto helpItem = MenuItemLabel::create(help, [&](Ref* sender) {
+	    log("help");
+        helpScene_ = HelpScene::createScene();
+        Director::getInstance()->pushScene(helpScene_);
+    });
+    auto optionItem = MenuItemLabel::create(option, [&](Ref* sender) {
+	    log("options");
+    	//TODO OptionScene
+    });	
+    auto closeItem = MenuItemLabel::create(close, [&](Ref* sender) {
+	    log("close");
+    	Director::getInstance()->end();
+    });
 
     auto menu = Menu::create(startItem,helpItem,optionItem,closeItem, nullptr);
     menu->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - 300));
@@ -89,11 +99,5 @@ bool HelloWorld::init()
 
 	
     return true;
-}
-
-
-void HelloWorld::menuCloseCallback(Ref* pSender)
-{
-    Director::getInstance()->end();
 }
 
