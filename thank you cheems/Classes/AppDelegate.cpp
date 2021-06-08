@@ -23,6 +23,8 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
+
+#include "Scene/GameScene/GameScene.h"
 #include "Scene/MainMenuScene/MainMenuScene.h"
 
 // #define USE_AUDIO_ENGINE 1
@@ -83,9 +85,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("MyCppGame", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("ThankYouCheems", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
-        glview = GLViewImpl::create("MyCppGame");
+        glview = GLViewImpl::create("ThankYouCheems");
 #endif
         director->setOpenGLView(glview);
     }
@@ -119,6 +121,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     auto scene = MainMenuScene::createScene();
+    //auto scene = GameScene::creatScsene();
 
     // run
     director->runWithScene(scene);

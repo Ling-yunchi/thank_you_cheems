@@ -17,20 +17,18 @@ private:
 	std::list<Sprite*> monsters;
 	std::list<Sprite*> flyItems;
 	Global* global_;
+	EventDispatcher* eventDispatcher_;
 	//用于存储按键是否按下释放
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;
 
 	//资源加载函数
 	void loadMap();
-	void creatSprites();
-	void creatMenu();
+	void createSprites();
+	void createMenu();
+	void createKBListener();
 
 	//更新函数
 	void update(float delta) override;
-
-	//按键检测函数
-	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
-	void onKenReleased(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
 	GameScene();

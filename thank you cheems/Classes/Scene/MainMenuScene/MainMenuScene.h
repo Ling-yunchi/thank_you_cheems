@@ -22,4 +22,7 @@ private:
     Scene* chooseSaveScene_;
     Scene* OptionsScene_;
     Scene* helpScene_;
+
+    void creatMenu();
+    void petalParticle();
 };
