@@ -45,7 +45,7 @@ void SaveChooseConfirmScene::creatLabel()
 	saveN->setColor(Color3B::BLACK);
 	addChild(saveN, 100);
 
-	auto createTime = ui::TextField::create(this->save.getCreatTime(), FONT_MARKER_FELT, 30);
+	auto createTime = ui::TextField::create(this->save.getCreateTime(), FONT_MARKER_FELT, 30);
 	createTime->setPosition(Vec2(630, 440));
 	createTime->setColor(Color3B::GRAY);
 	createTime->setTouchAreaEnabled(false);

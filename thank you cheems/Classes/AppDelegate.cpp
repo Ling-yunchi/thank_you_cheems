@@ -119,6 +119,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+	//设置窗口标题
+    director->getOpenGLView()->setViewName("Thank You Cheems");
+
+	//设置图标
+    director->getOpenGLView()->setIcon("cheems_with_knife.png");
+
     // create a scene. it's an autorelease object
     auto scene = MainMenuScene::createScene();
     //auto scene = GameScene::creatScsene();

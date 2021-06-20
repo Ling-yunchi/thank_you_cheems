@@ -3,22 +3,22 @@
 
 Save::Save() {
 	strcpy(this->name, "default");
-	creat_time = time(nullptr);
-	save_time = creat_time;
+	create_time = time(nullptr);
+	save_time = create_time;
 }
 
 Save::Save(char* name) {
 	strcpy(this->name, name);
-	creat_time = time(nullptr);
-	save_time = creat_time;
+	create_time = time(nullptr);
+	save_time = create_time;
 }
 
-char* Save::getCreatTime() const {
-	return ctime(&creat_time);
+char* Save::getCreateTime() const {
+	return ctime(&create_time);
 }
 
 char* Save::getSaveTime() const {
-	return ctime(&creat_time);
+	return ctime(&create_time);
 }
 
 const char* Save::getName() const {
@@ -26,6 +26,6 @@ const char* Save::getName() const {
 }
 
 void Save::update() {
-	creat_time = time(nullptr);
+	create_time = time(nullptr);
 	//Date = Date;
 }
