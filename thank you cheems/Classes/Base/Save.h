@@ -1,3 +1,7 @@
+/**
+ * ¥Êµµ¿‡
+ * @author wr
+ */
 #pragma once
 #include <ctime>
 class Save
