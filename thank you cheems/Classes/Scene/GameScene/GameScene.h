@@ -5,30 +5,36 @@
 #pragma once
 #include "cocos2d.h"
 #include "Base/GlobalVariable.h"
+#include "Sprite/AnimationSprite.h"
 #include <list>
-#include <map>
 
 using namespace cocos2d;
 
 class GameScene :public Scene
 {
 private:
-	Sprite* player;
+	AnimationSprite* cheems_;
 	std::list<Sprite*> monsters;
 	std::list<Sprite*> flyItems;
 	Global* global_;
 	EventDispatcher* eventDispatcher_;
-	//用于存储按键是否按下释放
-	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;
+	TMXTiledMap* map_;
+	Layer* spriteLayer_;
+
+	bool left_ = false;
+	bool right_ = false;
+	int dir_ = 0;
 
 	//资源加载函数
 	void loadMap();
 	void createSprites();
 	void createMenu();
-	void createKBListener();
+	void createListener();
 
 	//更新函数
 	void update(float delta) override;
+	void updateMove(int dir);
+	void moveMap();
 
 public:
 	GameScene();
@@ -38,4 +44,3 @@ public:
 	
 	CREATE_FUNC(GameScene);
 };
-

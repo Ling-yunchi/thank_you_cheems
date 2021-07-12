@@ -8,6 +8,7 @@
 #include "Base/Save.h"
 #include "ui/UIButton.h"
 #include "ui/UITextField.h"
+#include "Scene/GameScene/GameScene.h"
 
 cocos2d::Scene* SaveChooseConfirmScene::createScene()
 {
@@ -121,7 +122,7 @@ void SaveChooseConfirmScene::creatButton()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			Director::getInstance()->popScene();
+			Director::getInstance()->pushScene(GameScene::creatScsene());
 			break;
 		default:
 			break;

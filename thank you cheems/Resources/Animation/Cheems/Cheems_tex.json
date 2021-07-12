@@ -1,1 +1,36 @@
-{"width":1024,"SubTexture":[{"frameWidth":720,"y":1,"frameHeight":685,"width":639,"frameX":-70,"height":560,"name":"cheems_with_knife","frameY":-109,"x":1},{"frameWidth":432,"y":563,"frameHeight":239,"width":403,"frameX":-12,"height":220,"name":"hat","frameY":-17,"x":567},{"width":564,"y":563,"height":564,"name":"knife_left","x":1}],"height":2048,"name":"Cheems","imagePath":"Cheems_tex.png"}
+{
+  "width": 1024,
+  "SubTexture": [
+    {
+      "width": 720,
+      "y": 1,
+      "height": 685,
+      "name": "cheems_with_knife",
+      "x": 1
+    },
+    {
+      "width": 57,
+      "y": 1,
+      "height": 81,
+      "name": "tears",
+      "x": 723
+    },
+    {
+      "width": 432,
+      "y": 688,
+      "height": 239,
+      "name": "hat",
+      "x": 567
+    },
+    {
+      "width": 564,
+      "y": 688,
+      "height": 564,
+      "name": "knife_left",
+      "x": 1
+    }
+  ],
+  "height": 2048,
+  "name": "Cheems",
+  "imagePath": "Cheems_tex.png"
+}
