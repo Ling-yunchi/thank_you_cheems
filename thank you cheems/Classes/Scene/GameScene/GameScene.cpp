@@ -1,6 +1,8 @@
 #include "GameScene.h"
 
+#include "PauseScene.h"
 #include "VisibleRect.h"
+#include "ui/UIRichText.h"
 
 #define DEBUG
 
@@ -40,14 +42,38 @@ void GameScene::createSprites()
 	factory->loadDragonBonesData("Animation/Sweating_soybean/Sweating_soybean_ske.json", "soybean");
 	factory->loadTextureAtlasData("Animation/Sweating_soybean/Sweating_soybean_tex.json", "soybean");
 
-	auto soybean = AnimationSprite::create("soybean", Size(200, 300));
-	soybean->setScale(0.5);
+	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
+	soybean->setScale(0.2);
 	soybean->setPosition(VisibleRect::center());
 	map_->addChild(soybean, 999);
 }
 
 void GameScene::createMenu()
 {
+	//HPÏÔÊ¾
+	auto hp = ui::RichText::create();
+	hp->pushBackElement(ui::RichElementText::create(1, Color3B::WHITE, 255, "H P : ", FONT_MARKER_FELT, 40));
+	hp->setPosition(Vec2(100, 660));
+	addChild(hp, 999);
+
+	int HP = 3;//cheems_.getHP();
+	hearts_.resize(3);
+	for (int i = 0; i < HP; i++) {
+		auto h = Sprite::create("heart.png");
+		h->setScale(3);
+		h->setPosition(Vec2(170 + 60 * i, 660));
+		addChild(h, 999);
+		hearts_.push_back(h);
+	}
+
+	//ÔÝÍ£°´Å¥
+	auto label = Label::create("pause", FONT_MARKER_FELT, 40);
+	auto pause = MenuItemLabel::create(label, [&](Ref* sender) {
+		Director::getInstance()->pushScene(PauseScene::createScene());	
+	});
+	auto menu = Menu::create(pause, NULL);
+	menu->setPosition(Vec2(990, 660));
+	addChild(menu, 999);
 }
 
 void GameScene::createListener()

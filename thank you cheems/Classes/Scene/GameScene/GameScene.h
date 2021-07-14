@@ -20,6 +20,7 @@ private:
 	EventDispatcher* eventDispatcher_;
 	TMXTiledMap* map_;
 	Layer* spriteLayer_;
+	std::vector<Sprite*> hearts_;
 
 	bool left_ = false;
 	bool right_ = false;
