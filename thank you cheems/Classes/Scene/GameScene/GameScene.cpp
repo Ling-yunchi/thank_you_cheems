@@ -2,6 +2,8 @@
 
 #include "VisibleRect.h"
 
+#define DEBUG
+
 void GameScene::loadMap()
 {
 	auto map = cocos2d::TMXTiledMap::create("map/testMap.tmx");
@@ -34,6 +36,14 @@ void GameScene::createSprites()
 	cheems_->setPosition(pos["x"].asFloat(),pos["y"].asFloat());
 	cheems_->setScale(0.1);
 	map_->addChild(cheems_, 999);
+
+	factory->loadDragonBonesData("Animation/Sweating_soybean/Sweating_soybean_ske.json", "soybean");
+	factory->loadTextureAtlasData("Animation/Sweating_soybean/Sweating_soybean_tex.json", "soybean");
+
+	auto soybean = AnimationSprite::create("soybean", Size(200, 300));
+	soybean->setScale(0.5);
+	soybean->setPosition(VisibleRect::center());
+	map_->addChild(soybean, 999);
 }
 
 void GameScene::createMenu()
@@ -159,7 +169,11 @@ GameScene::~GameScene()
 
 cocos2d::Scene* GameScene::creatScsene()
 {
-	return  GameScene::create();
+	auto scene = GameScene::create();
+#ifdef  DEBUG
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+#endif
+	return scene;
 }
 
 bool GameScene::init()
