@@ -46,7 +46,7 @@ void SaveChooseConfirmScene::creatLabel()
 	saveN->setColor(Color3B::BLACK);
 	addChild(saveN, 100);
 
-	auto createTime = ui::TextField::create(this->save.getCreateTime(), FONT_MARKER_FELT, 30);
+	auto createTime = ui::TextField::create(std::string(this->save.getCreateTime()), FONT_MARKER_FELT, 30);
 	createTime->setPosition(Vec2(630, 440));
 	createTime->setColor(Color3B::GRAY);
 	createTime->setTouchAreaEnabled(false);
@@ -57,7 +57,7 @@ void SaveChooseConfirmScene::creatLabel()
 	createT->setColor(Color3B::BLACK);
 	addChild(createT, 100);
 
-	auto updateTime = ui::TextField::create(this->save.getSaveTime(), FONT_MARKER_FELT, 30);
+	auto updateTime = ui::TextField::create(std::string(this->save.getSaveTime()), FONT_MARKER_FELT, 30);
 	updateTime->setPosition(Vec2(630, 410));
 	updateTime->setColor(Color3B::GRAY);
 	updateTime->setTouchAreaEnabled(false);

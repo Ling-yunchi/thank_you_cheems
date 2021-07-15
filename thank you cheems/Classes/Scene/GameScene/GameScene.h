@@ -20,10 +20,12 @@ private:
 	EventDispatcher* eventDispatcher_;
 	TMXTiledMap* map_;
 	Layer* spriteLayer_;
+	std::vector<Sprite*> hearts_;
 
 	bool left_ = false;
 	bool right_ = false;
 	int dir_ = 0;
+	int hp_ = 0;
 
 	//资源加载函数
 	void loadMap();
@@ -34,7 +36,11 @@ private:
 	//更新函数
 	void update(float delta) override;
 	void updateMove(int dir);
+	void updateAttack();
+	void updateMonsters();
+	void updateHeart();
 	void moveMap();
+	void gameOver(bool res);
 
 public:
 	GameScene();

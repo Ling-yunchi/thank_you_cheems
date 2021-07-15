@@ -1,6 +1,9 @@
 #include "GameScene.h"
 
+#include "GameOverScene.h"
+#include "PauseScene.h"
 #include "VisibleRect.h"
+#include "ui/UIRichText.h"
 
 #define DEBUG
 
@@ -40,14 +43,38 @@ void GameScene::createSprites()
 	factory->loadDragonBonesData("Animation/Sweating_soybean/Sweating_soybean_ske.json", "soybean");
 	factory->loadTextureAtlasData("Animation/Sweating_soybean/Sweating_soybean_tex.json", "soybean");
 
-	auto soybean = AnimationSprite::create("soybean", Size(200, 300));
-	soybean->setScale(0.5);
+	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
+	soybean->setScale(0.2);
 	soybean->setPosition(VisibleRect::center());
 	map_->addChild(soybean, 999);
 }
 
 void GameScene::createMenu()
 {
+	//HP显示
+	auto hp = ui::RichText::create();
+	hp->pushBackElement(ui::RichElementText::create(1, Color3B::WHITE, 255, "H P : ", FONT_MARKER_FELT, 40));
+	hp->setPosition(Vec2(100, 660));
+	addChild(hp, 999);
+
+	hp_ = 3;//cheems_.getHP();
+	hearts_.resize(3);
+	for (int i = 0; i < hp_; i++) {
+		auto h = Sprite::create("heart.png");
+		h->setScale(3);
+		h->setPosition(Vec2(170 + 60 * i, 660));
+		addChild(h, 999);
+		hearts_.push_back(h);
+	}
+
+	//暂停按钮
+	auto label = Label::create("pause", FONT_MARKER_FELT, 40);
+	auto pause = MenuItemLabel::create(label, [&](Ref* sender) {
+		Director::getInstance()->pushScene(PauseScene::createScene());	
+	});
+	auto menu = Menu::create(pause, NULL);
+	menu->setPosition(Vec2(990, 660));
+	addChild(menu, 999);
 }
 
 void GameScene::createListener()
@@ -87,6 +114,12 @@ void GameScene::createListener()
 		case cocos2d::EventKeyboard::KeyCode::KEY_L:
 			cheems_->die();
 			break;
+		case cocos2d::EventKeyboard::KeyCode::KEY_O:
+			gameOver(true);
+			break;
+		case cocos2d::EventKeyboard::KeyCode::KEY_P:
+			gameOver(false);
+			break;
 		}
 	};
 	kbListener->onKeyReleased = [&](EventKeyboard::KeyCode code, Event* event) {
@@ -125,6 +158,9 @@ void GameScene::update(float delta)
 {
 	cheems_->updatePosition();
 	moveMap();
+	updateAttack();
+	updateMonsters();
+	updateHeart();
 }
 
 void GameScene::updateMove(int dir)
@@ -139,6 +175,30 @@ void GameScene::updateMove(int dir)
 		cheems_->move(0);
 }
 
+void GameScene::updateAttack()
+{
+	//TODO: 矩形检测
+}
+
+void GameScene::updateMonsters()
+{
+	//TODO : Move, Attack; 
+}
+
+void GameScene::updateHeart()
+{
+	//更新血量显示
+	/*if (cheems_.getHP != hp_) {
+		auto heart = Sprite::create("heart.png");
+		auto empty_heart = Sprite::create("empty_heart.png");
+		for (int i = 0; i < cheems_.getMaxHP; i++)
+			if (i < hp_)
+				hearts_[i]->setTexture(heart->getTexture());
+			else
+				hearts_[i]->setTexture(empty_heart->getTexture());
+	}*/
+}
+
 void GameScene::moveMap()
 {
 	auto a = map_->getPosition();
@@ -151,6 +211,11 @@ void GameScene::moveMap()
 
 	x = b.x;
 	y = b.y;
+}
+
+void GameScene::gameOver(bool res)
+{
+	Director::getInstance()->runWithScene(GameOverScene::createScene(res));
 }
 
 GameScene::GameScene() :
