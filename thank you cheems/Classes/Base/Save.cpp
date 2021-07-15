@@ -1,5 +1,5 @@
 #include "Save.h"
-#include "string.h"
+#include "cstring"
 
 Save::Save() {
 	strcpy(this->name, "default");
@@ -18,7 +18,7 @@ char* Save::getCreateTime() const {
 }
 
 char* Save::getSaveTime() const {
-	return ctime(&create_time);
+	return ctime(&save_time);
 }
 
 const char* Save::getName() const {
@@ -26,6 +26,6 @@ const char* Save::getName() const {
 }
 
 void Save::update() {
-	create_time = time(nullptr);
+	save_time = time(nullptr);
 	//Date = Date;
 }

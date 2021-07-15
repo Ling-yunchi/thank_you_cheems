@@ -36,6 +36,7 @@ private:
 	void update(float delta) override;
 	void updateMove(int dir);
 	void moveMap();
+	void gameOver(bool res);
 
 public:
 	GameScene();

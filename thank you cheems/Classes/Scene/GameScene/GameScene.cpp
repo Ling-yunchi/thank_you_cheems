@@ -1,5 +1,6 @@
 #include "GameScene.h"
 
+#include "GameOverScene.h"
 #include "PauseScene.h"
 #include "VisibleRect.h"
 #include "ui/UIRichText.h"
@@ -113,6 +114,12 @@ void GameScene::createListener()
 		case cocos2d::EventKeyboard::KeyCode::KEY_L:
 			cheems_->die();
 			break;
+		case cocos2d::EventKeyboard::KeyCode::KEY_O:
+			gameOver(true);
+			break;
+		case cocos2d::EventKeyboard::KeyCode::KEY_P:
+			gameOver(false);
+			break;
 		}
 	};
 	kbListener->onKeyReleased = [&](EventKeyboard::KeyCode code, Event* event) {
@@ -177,6 +184,11 @@ void GameScene::moveMap()
 
 	x = b.x;
 	y = b.y;
+}
+
+void GameScene::gameOver(bool res)
+{
+	Director::getInstance()->runWithScene(GameOverScene::createScene(res));
 }
 
 GameScene::GameScene() :
