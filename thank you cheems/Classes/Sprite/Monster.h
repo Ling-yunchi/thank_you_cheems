@@ -10,6 +10,6 @@ private:
     int HealthPoint = 1;
     int AttackPoint = 1;
 public:
-    void move();
-
+    void Move();
+    void Attack();
 };
