@@ -16,6 +16,7 @@ public:
     void Move();
     void Attack();
     static Monster* create();
-    void UpdateMove();
-    bool UpdateAttack();
+    //void UpdateMove();
+    //bool UpdateAttack();
+    bool UpdateTimer();//·µ»ØIsAttack
 };
