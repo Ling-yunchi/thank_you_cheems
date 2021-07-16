@@ -18,21 +18,19 @@ bool Cheems::CheemsAttact(int directon, std::list<Monster*> monsters)
 	AnimationSprite::attack();
 	isattack = true;
 	for (auto monster : monsters) {
-		monster->getPosition();
+		if (directon == 1)
+		{
+			Rect RightAttact(this->getPositionX() + 22, this->getPositionY(), 30, 30);
+			Rect soybean(monster->getPositionX(), monster->getPositionY(), 60, 39);
+			return RightAttact.intersectsRect(soybean);
+		}
+		else if (directon == -1)
+		{
+			Rect LeftAttact(this->getPositionX() - 30, this->getPositionY(), 30, 30);
+			Rect soybean(monster->getPositionX(), monster->getPositionY(), 60, 39);
+			return LeftAttact.intersectsRect(soybean);
+		}
 	}
-	if (directon == 1)
-	{
-		Rect RightAttact(this->getPositionX() + 22, this->getPositionY(), 30, 30);
-		Rect soybean(monster_x, monster_y, 60, 39);
-		return RightAttact.intersectsRect(soybean);
-	}
-	else if (directon == -1)
-	{
-		Rect LeftAttact(this->getPositionX() - 30, this->getPositionY(), 30, 30);
-		Rect soybean(monster_x, monster_y, 60, 39);
-		return LeftAttact.intersectsRect(soybean);
-	}
-
 }
 
 int Cheems::getHP()
