@@ -4,6 +4,7 @@
 #include "PauseScene.h"
 #include "VisibleRect.h"
 #include "ui/UIRichText.h"
+#include "Base/ConstValue.h"
 
 #define DEBUG
 
@@ -12,18 +13,20 @@ void GameScene::loadMap()
 	auto map = cocos2d::TMXTiledMap::create("map/testMap.tmx");
 	auto objGroup = map->getObjectGroup("ground");
 	auto& objs = objGroup->getObjects();
-
 	for (auto& obj : objs) {
 		auto objMap = obj.asValueMap();
 		auto node = Node::create();
 		node->setPosition(objMap["x"].asFloat() + objMap["width"].asFloat() / 2, objMap["y"].asFloat() + objMap["height"].asFloat() / 2);
 		auto body = PhysicsBody::createBox(Size(objMap["width"].asFloat(), objMap["height"].asFloat()));
+		body->setCategoryBitmask(GroundCateoryBitmask);
+		body->setCollisionBitmask(GroundCollisionBitmask);
+		body->setContactTestBitmask(GroundContactTestBitmask);
 		body->setDynamic(false);
 		node->setPhysicsBody(body);
 		map->addChild(node);
 	}
 
-	map->setScale(2);
+	map->setScale(2.5);
 	map_ = map;
 	addChild(map_, 0);
 }
@@ -33,9 +36,11 @@ void GameScene::createSprites()
 	const auto factory = dragonBones::CCFactory::getFactory();
 	factory->loadDragonBonesData("Animation/Cheems/Cheems_ske.json", "cheems");
 	factory->loadTextureAtlasData("Animation/Cheems/Cheems_tex.json", "cheems");
+	factory->loadDragonBonesData("Animation/Sweating_soybean/Sweating_soybean_ske.json", "soybean");
+	factory->loadTextureAtlasData("Animation/Sweating_soybean/Sweating_soybean_tex.json", "soybean");
 
 	cheems_ = AnimationSprite::create("cheems", Size(220, 300));
-	auto pos = map_->getObjectGroup("sprites")->getObject("cheems");
+	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(),pos["y"].asFloat());
 	cheems_->setScale(0.1);
 	cheems_->getPhysicsBody()->setCategoryBitmask(0x1);
@@ -43,9 +48,15 @@ void GameScene::createSprites()
 	cheems_->getPhysicsBody()->setContactTestBitmask(0x2);
 	map_->addChild(cheems_, 999);
 
-	factory->loadDragonBonesData("Animation/Sweating_soybean/Sweating_soybean_ske.json", "soybean");
-	factory->loadTextureAtlasData("Animation/Sweating_soybean/Sweating_soybean_tex.json", "soybean");
-
+	//auto objGroup = map_->getObjectGroup("soybean");
+	//auto& objs = objGroup->getObjects();
+	//for(auto& obj : objs) {
+	//	auto& vmap = obj.asValueMap();
+	//	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
+	//	soybean->setScale(0.2);
+	//	soybean->setPosition(Vec2(vmap["x"].asFloat(), vmap["y"].asFloat()));
+	//	map_->addChild(soybean, 999);
+	//}
 	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
 	soybean->setScale(0.2);
 	soybean->setPosition(VisibleRect::center());
@@ -55,6 +66,13 @@ void GameScene::createSprites()
 
 
 	map_->addChild(soybean, 999);
+	
+	auto drop = Sprite::create("drop.png");
+	drop->setPosition(VisibleRect::center());
+	auto body = cocos2d::PhysicsBody::createCircle(60);
+	drop->setScale(0.1);
+	drop->setPhysicsBody(body);
+	map_->addChild(drop);
 }
 
 void GameScene::createMenu()
@@ -169,6 +187,7 @@ void GameScene::update(float delta)
 	updateAttack();
 	updateMonsters();
 	updateHeart();
+	judgeGameOver();
 }
 
 void GameScene::updateMove(int dir)
@@ -207,6 +226,15 @@ void GameScene::updateHeart()
 	}*/
 }
 
+void GameScene::judgeGameOver()
+{
+	//if (monsters.empty())
+	//	gameOver(true);
+	
+	//if(cheems_.getHP()==0)
+	//	gameOver(false);
+}
+
 void GameScene::moveMap()
 {
 	auto a = map_->getPosition();
@@ -214,8 +242,8 @@ void GameScene::moveMap()
 
 	static float x = b.x;
 	static float y = b.y;
-	if (a.x + x > 200 || a.x + x < map_->getContentSize().width - 200)
-		map_->runAction(MoveBy::create(0.1, Vec2(x - b.x, y - b.y)));
+	
+	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x)*map_->getScale(), y - b.y)));
 
 	x = b.x;
 	y = b.y;
