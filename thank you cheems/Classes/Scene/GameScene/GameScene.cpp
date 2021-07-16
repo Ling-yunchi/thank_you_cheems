@@ -67,7 +67,7 @@ void GameScene::createSprites()
 
 void GameScene::createMenu()
 {
-	//HP��ʾ
+	//HP显示
 	auto hp = ui::RichText::create();
 	hp->pushBackElement(ui::RichElementText::create(1, Color3B::WHITE, 255, "H P : ", FONT_MARKER_FELT, 40));
 	hp->setPosition(Vec2(100, 660));
@@ -82,7 +82,7 @@ void GameScene::createMenu()
 		hearts_.push_back(h);
 	}
 
-	//��ͣ��ť
+	//暂停按钮
 	auto label = Label::create("pause", FONT_MARKER_FELT, 40);
 	auto pause = MenuItemLabel::create(label, [&](Ref* sender) {
 		Director::getInstance()->pushScene(PauseScene::createScene());
@@ -201,7 +201,7 @@ void GameScene::updateMove(int dir)
 
 void GameScene::updateAttack()
 {
-	//TODO: ���μ��
+	//TODO: 矩形检测
 }
 
 void GameScene::updateMonsters()
@@ -217,8 +217,8 @@ void GameScene::updateMonsters()
 
 void GameScene::updateHeart()
 {
-	//����Ѫ����ʾ
-	if (cheems_->getHP() != hp_) {
+	//更新血量显示
+	/*if (cheems_.getHP != hp_) {
 		auto heart = Sprite::create("heart.png");
 		auto empty_heart = Sprite::create("empty_heart.png");
 		for (int i = 0; i < 3; i++)
@@ -291,7 +291,7 @@ bool GameScene::init()
 	createMenu();
 	createListener();
 
-	//��ӵ�����,ʹÿһ֡������update����
+	//添加调度器,使每一帧都进入update函数
 	this->scheduleUpdate();
 
 	return true;
