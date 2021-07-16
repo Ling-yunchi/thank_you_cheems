@@ -179,7 +179,7 @@ void GameScene::createListener()
 void GameScene::update(float delta)
 {
 	cheems_->updatePosition();
-	cheems_->updateTimer();
+	
 	moveMap();
 	updateAttack();
 	updateMonsters();
@@ -218,7 +218,7 @@ void GameScene::updateMonsters()
 void GameScene::updateHeart()
 {
 	//更新血量显示
-	/*if (cheems_.getHP != hp_) {
+	if (cheems_->getHP() != hp_) {
 		auto heart = Sprite::create("heart.png");
 		auto empty_heart = Sprite::create("empty_heart.png");
 		for (int i = 0; i < 3; i++)
