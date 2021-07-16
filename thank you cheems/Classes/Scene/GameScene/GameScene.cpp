@@ -64,9 +64,9 @@ void GameScene::createMenu()
 	hp->setPosition(Vec2(100, 660));
 	addChild(hp, 999);
 
-	int HP = 3;//cheems_.getHP();
+	hp_ = 3;//cheems_.getHP();
 	hearts_.resize(3);
-	for (int i = 0; i < HP; i++) {
+	for (int i = 0; i < hp_; i++) {
 		auto h = Sprite::create("heart.png");
 		h->setScale(3);
 		h->setPosition(Vec2(170 + 60 * i, 660));
@@ -165,6 +165,9 @@ void GameScene::update(float delta)
 {
 	cheems_->updatePosition();
 	moveMap();
+	updateAttack();
+	updateMonsters();
+	updateHeart();
 }
 
 void GameScene::updateMove(int dir)
@@ -177,6 +180,30 @@ void GameScene::updateMove(int dir)
 		cheems_->move(1);
 	else
 		cheems_->move(0);
+}
+
+void GameScene::updateAttack()
+{
+	//TODO: 矩形检测
+}
+
+void GameScene::updateMonsters()
+{
+	//TODO : Move, Attack; 
+}
+
+void GameScene::updateHeart()
+{
+	//更新血量显示
+	/*if (cheems_.getHP != hp_) {
+		auto heart = Sprite::create("heart.png");
+		auto empty_heart = Sprite::create("empty_heart.png");
+		for (int i = 0; i < cheems_.getMaxHP; i++)
+			if (i < hp_)
+				hearts_[i]->setTexture(heart->getTexture());
+			else
+				hearts_[i]->setTexture(empty_heart->getTexture());
+	}*/
 }
 
 void GameScene::moveMap()
