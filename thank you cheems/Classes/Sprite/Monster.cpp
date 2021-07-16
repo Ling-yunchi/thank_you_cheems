@@ -10,6 +10,7 @@ void Monster::Move()
 void Monster::Attack()
 {
 	AnimationSprite::attack();
+	IsAttack = true;
 }
 
 Monster* Monster::create()
