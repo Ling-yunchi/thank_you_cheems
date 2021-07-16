@@ -24,7 +24,7 @@ AnimationSprite::AnimationSprite()
 	isHurt_(false),
 	moveState_(nullptr),
 	attackState_(nullptr),
-	speedX_(5),
+	speedX_(50),
 	isDie_(false),
 	isDieComplete_(false),
 	jumpHeight_(200),
@@ -155,7 +155,7 @@ void AnimationSprite::updatePosition()
 		}
 		if (isJumpA_) {
 			//runAction(JumpBy::create(0.55, Vec2(0, jumpHeight_), jumpHeight_, 1));
-			getPhysicsBody()->setVelocity(Vec2(getPhysicsBody()->getVelocity().x, 10));
+			getPhysicsBody()->setVelocity(Vec2(getPhysicsBody()->getVelocity().x, 100));
 			isJumpA_ = false;
 		}
 	}
