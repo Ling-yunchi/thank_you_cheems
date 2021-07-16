@@ -48,7 +48,7 @@ void GameScene::createSprites()
 	map_->setPosition(200,-400);
 
 
-	auto objGroup = map_->getObjectGroup("soybean");
+	auto objGroup = map_->getObjectGroup("monsters");
 	auto& objs = objGroup->getObjects();
 	int cnt = 1;
 	for(auto& obj : objs) {
@@ -60,17 +60,6 @@ void GameScene::createSprites()
 		monsters.push_back(soybean);
 		map_->addChild(soybean, 999);
 	}
-	
-	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
-	soybean->setScale(0.2);
-	soybean->setPosition(VisibleRect::center());
-	map_->addChild(soybean, 999);
-
-
-	//TEST
-	Drop* drop = Drop::create(soybean->getPosition(), cheems_->getPosition());
-	drop->setPosition(VisibleRect::center());
-	map_->addChild(drop);
 }
 
 void GameScene::createMenu()
