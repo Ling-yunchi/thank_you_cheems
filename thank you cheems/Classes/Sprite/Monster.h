@@ -6,12 +6,16 @@
 
 class Monster : public AnimationSprite
 {
-private:
+public:
     int HealthPoint = 1;
     int AttackPoint = 1;
     bool init() override;
-public:
+    bool IsAttack = false;//ÅÐ¶ÏÊÇ·ñ¹¥»÷ÁË
+    int TimerAttack = 0;
+    int TimerMove = 0;
     void Move();
     void Attack();
     static Monster* create();
+    void UpdateMove();
+    bool UpdateAttack();
 };

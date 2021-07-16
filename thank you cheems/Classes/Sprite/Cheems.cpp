@@ -3,7 +3,7 @@
 
 bool Cheems::init()
 {
-	AnimationSprite::initWithNameAndSize("cheems", Size(220, 300);
+	AnimationSprite::initWithNameAndSize("cheems", Size(220, 300));
 
 	getPhysicsBody()->setCategoryBitmask(CheemsCateoryBitmask);
 	getPhysicsBody()->setCollisionBitmask(CheemsCollisionBitmask);
