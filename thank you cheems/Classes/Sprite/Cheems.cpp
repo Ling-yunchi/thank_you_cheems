@@ -4,7 +4,7 @@
 bool Cheems::init()
 {
 	AnimationSprite::initWithNameAndSize("cheems", Size(220, 300));
-
+	setTag(CheemsTag);
 	getPhysicsBody()->setCategoryBitmask(CheemsCateoryBitmask);
 	getPhysicsBody()->setCollisionBitmask(CheemsCollisionBitmask);
 	getPhysicsBody()->setContactTestBitmask(CheemsContactTestBitmask);
@@ -13,19 +13,23 @@ bool Cheems::init()
 	return true;
 }
 
-bool Cheems::CheemsAttact(int directon, float monster_x, float monster_y)
+bool Cheems::CheemsAttact(int directon, std::list<Monster*> monsters)
 {
-	if (directon == 1)
-	{
-		Rect RightAttact(this->getPositionX() + 22,this->getPositionY(),30,30);
-		Rect soybean(monster_x, monster_y, 60, 39);
-		return RightAttact.intersectsRect(soybean);
-	}
-	else if(directon==-1)
-	{
-		Rect LeftAttact(this->getPositionX() - 30, this->getPositionY(), 30, 30);
-		Rect soybean(monster_x, monster_y, 60, 39);
-		return LeftAttact.intersectsRect(soybean);
+	AnimationSprite::attack();
+	isattack = true;
+	for (auto monster : monsters) {
+		if (directon == 1)
+		{
+			Rect RightAttact(this->getPositionX() + 22, this->getPositionY(), 30, 30);
+			Rect soybean(monster->getPositionX(), monster->getPositionY(), 60, 39);
+			return RightAttact.intersectsRect(soybean);
+		}
+		else if (directon == -1)
+		{
+			Rect LeftAttact(this->getPositionX() - 30, this->getPositionY(), 30, 30);
+			Rect soybean(monster->getPositionX(), monster->getPositionY(), 60, 39);
+			return LeftAttact.intersectsRect(soybean);
+		}
 	}
 }
 
@@ -34,10 +38,6 @@ int Cheems::getHP()
 	return HP;
 }
 
-void Cheems::setHP(int Hp)
-{
-	MAXHP = Hp;
-}
 
 Cheems* Cheems::create()
 {
@@ -52,6 +52,33 @@ Cheems* Cheems::create()
 
 void Cheems::hurt()
 {
+	ishurt = true;
 	AnimationSprite::hurt();
 	HP -= 1;
+}
+
+void Cheems::updateTimer()
+{
+	if (isattack)
+		timerAttack += 1;
+
+	if (timerAttack == 100)
+	{
+		isattack = false;
+		timerAttack = 0;
+	}
+
+	if (ishurt)
+		timerHurt += 1;
+
+	if (timerHurt == 120)
+	{
+		ishurt = false;
+		timerHurt = 0;
+	}
+}
+
+bool Cheems::getIsattact()
+{
+	return isattack;
 }
