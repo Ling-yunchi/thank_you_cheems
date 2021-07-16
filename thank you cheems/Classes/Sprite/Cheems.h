@@ -7,12 +7,12 @@ class Cheems :public AnimationSprite
 {
 	int HP;
 	bool init() override;
-	bool isattack;
+	bool isattack = false;
 	int timerAttack;
-	bool ishurt;
+	bool ishurt = false;
 	int timerHurt;
 public:
-	bool CheemsAttact(int directon, std::list<Monster*> monsters);
+	void CheemsAttact(int directon, std::list<Monster*> monsters);
 	int getHP();
 	static Cheems* create();
 	void hurt();
