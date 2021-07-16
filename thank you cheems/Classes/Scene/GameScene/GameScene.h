@@ -38,7 +38,6 @@ private:
 	//¸üÐÂº¯Êý
 	void update(float delta) override;
 	void updateMove(int dir);
-	void updateAttack();
 	void updateMonsters();
 	void updateHeart();
 	void judgeGameOver();

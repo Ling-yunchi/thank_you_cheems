@@ -36,6 +36,8 @@ bool Monster::init()
 
 	setScale(0.1);
 
+	
+
 	return true;
 }
 

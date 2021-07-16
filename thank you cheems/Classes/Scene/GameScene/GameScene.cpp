@@ -50,11 +50,13 @@ void GameScene::createSprites()
 
 	auto objGroup = map_->getObjectGroup("soybean");
 	auto& objs = objGroup->getObjects();
+	int cnt = 1;
 	for(auto& obj : objs) {
 		auto& vmap = obj.asValueMap();
 		auto soybean = Monster::create();
 		soybean->setScale(0.2);
 		soybean->setPosition(Vec2(vmap["x"].asFloat(), vmap["y"].asFloat()));
+		soybean->setTag(cnt++);
 		monsters.push_back(soybean);
 		map_->addChild(soybean, 999);
 	}
@@ -176,6 +178,17 @@ void GameScene::createListener()
 			cheems_->hurt();
 		if ((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
 			cheems_->hurt();
+		if ((tagA == AttackTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == AttackTag)) {
+			auto tag = tagA == SoybeanTag ? contact.getShapeA()->getBody()->getNode()->getTag() : contact.getShapeB()->getBody()->getNode()->getTag();
+			for (auto it = monsters.begin(); it != monsters.end();) {
+				if ((*it)->getTag() == tag)
+					monsters.erase(it++);
+				else
+					it++;
+			}
+		}
+			
+
 
 		return true;
 	};
@@ -188,7 +201,6 @@ void GameScene::update(float delta)
 	cheems_->updateTimer();
 	
 	moveMap();
-	updateAttack();
 	updateMonsters();
 	updateHeart();
 	judgeGameOver();
@@ -204,11 +216,6 @@ void GameScene::updateMove(int dir)
 		cheems_->move(1);
 	else
 		cheems_->move(0);
-}
-
-void GameScene::updateAttack()
-{
-	//TODO: 矩形检测
 }
 
 void GameScene::updateMonsters()

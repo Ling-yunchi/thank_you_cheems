@@ -12,7 +12,7 @@ class Cheems :public AnimationSprite
 	bool ishurt = false;
 	int timerHurt;
 public:
-	void CheemsAttact(int directon, std::list<Monster*> monsters);
+	void CheemsAttact(int directon, std::list<Monster*> &monsters);
 	int getHP();
 	static Cheems* create();
 	void hurt();

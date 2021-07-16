@@ -16,7 +16,7 @@ bool Cheems::init()
 	return true;
 }
 
-bool Cheems::CheemsAttact(int directon, std::list<Monster*> &monsters)
+void Cheems::CheemsAttact(int directon, std::list<Monster*> &monsters)
 {
 	AnimationSprite::attack();
 	isattack = true;
