@@ -1,5 +1,15 @@
+//µ–»À¿‡
 #pragma once
-class Monster
-{
-};
+#include <cocos2d.h>
+#include "AnimationSprite.h"
 
+
+class Monster : public AnimationSprite
+{
+private:
+    int HealthPoint = 1;
+    int AttackPoint = 1;
+public:
+    void Move();
+    void Attack();
+};
