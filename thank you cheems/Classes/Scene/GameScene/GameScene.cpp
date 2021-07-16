@@ -53,6 +53,7 @@ void GameScene::createSprites()
 	soybean->getPhysicsBody()->setCollisionBitmask(0x1);
 	soybean->getPhysicsBody()->setContactTestBitmask(0x1);
 
+
 	map_->addChild(soybean, 999);
 }
 
