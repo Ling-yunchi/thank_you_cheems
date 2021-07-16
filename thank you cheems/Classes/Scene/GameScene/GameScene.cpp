@@ -1,4 +1,4 @@
-#include "GameScene.h"
+ï»¿#include "GameScene.h"
 
 #include "GameOverScene.h"
 #include "PauseScene.h"
@@ -43,10 +43,6 @@ void GameScene::createSprites()
 	cheems_ = AnimationSprite::create("cheems", Size(220, 300));
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(),pos["y"].asFloat());
-	cheems_->setScale(0.1);
-	cheems_->getPhysicsBody()->setCategoryBitmask(0x1);
-	cheems_->getPhysicsBody()->setCollisionBitmask(0x1);
-	cheems_->getPhysicsBody()->setContactTestBitmask(0x2);
 	map_->addChild(cheems_, 999);
 
 	//auto objGroup = map_->getObjectGroup("soybean");
@@ -61,21 +57,16 @@ void GameScene::createSprites()
 	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
 	soybean->setScale(0.2);
 	soybean->setPosition(VisibleRect::center());
-	soybean->getPhysicsBody()->setCategoryBitmask(0x2);
-	soybean->getPhysicsBody()->setCollisionBitmask(0x1);
-	soybean->getPhysicsBody()->setContactTestBitmask(0x1);
-
-
 	map_->addChild(soybean, 999);
 	
-	Drop* drop = Drop::create();
+	Drop* drop = Drop::create(soybean->getPosition(),cheems_->getPosition());
 	drop->setPosition(VisibleRect::center());
 	map_->addChild(drop);
 }
 
 void GameScene::createMenu()
 {
-	//HPÏÔÊ¾
+	//HPæ˜¾ç¤º
 	auto hp = ui::RichText::create();
 	hp->pushBackElement(ui::RichElementText::create(1, Color3B::WHITE, 255, "H P : ", FONT_MARKER_FELT, 40));
 	hp->setPosition(Vec2(100, 660));
@@ -91,7 +82,7 @@ void GameScene::createMenu()
 		hearts_.push_back(h);
 	}
 
-	//ÔÝÍ£°´Å¥
+	//æš‚åœæŒ‰é’®
 	auto label = Label::create("pause", FONT_MARKER_FELT, 40);
 	auto pause = MenuItemLabel::create(label, [&](Ref* sender) {
 		Director::getInstance()->pushScene(PauseScene::createScene());	
@@ -171,8 +162,14 @@ void GameScene::createListener()
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = [this](PhysicsContact& contact) {
-		log("%f,%f", cheems_->getPosition().x, cheems_->getPosition().y);
-		cheems_->down();
+		int tagA = contact.getShapeA()->getTag(), tagB = contact.getShapeB()->getTag();
+		if ((tagA == CheemsTag && tagB == GroundTag) || (tagA == GroundTag && tagB == CheemsTag))
+			cheems_->down();
+		if ((tagA == CheemsTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == CheemsTag))
+			cheems_->hurt();
+		if((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
+			cheems_->hurt();
+		
 		return true;
 	};
 	eventDispatcher_->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -202,17 +199,22 @@ void GameScene::updateMove(int dir)
 
 void GameScene::updateAttack()
 {
-	//TODO: ¾ØÐÎ¼ì²â
+	//TODO: çŸ©å½¢æ£€æµ‹
 }
 
 void GameScene::updateMonsters()
 {
-	//TODO : Move, Attack; 
+	for (auto monster : monsters) {
+
+		if(monster->getPosition().distance(cheems_->getPosition())<=500) {
+			
+		}
+	}
 }
 
 void GameScene::updateHeart()
 {
-	//¸üÐÂÑªÁ¿ÏÔÊ¾
+	//æ›´æ–°è¡€é‡æ˜¾ç¤º
 	/*if (cheems_.getHP != hp_) {
 		auto heart = Sprite::create("heart.png");
 		auto empty_heart = Sprite::create("empty_heart.png");
@@ -285,7 +287,7 @@ bool GameScene::init()
 	createMenu();
 	createListener();
 
-	//Ìí¼Óµ÷¶ÈÆ÷,Ê¹Ã¿Ò»Ö¡¶¼½øÈëupdateº¯Êý
+	//æ·»åŠ è°ƒåº¦å™¨,ä½¿æ¯ä¸€å¸§éƒ½è¿›å…¥updateå‡½æ•°
 	this->scheduleUpdate();
 
 	return true;

@@ -30,6 +30,7 @@ public:
 	void die();
 	void updateAnimation();		//用于在播放完完整播放的动画后回到普通状态
 	void updatePosition();
+	int getDir();
 
 	bool isDie() const { return isDieComplete_; }
 

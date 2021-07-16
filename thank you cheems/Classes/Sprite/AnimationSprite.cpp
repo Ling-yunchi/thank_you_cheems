@@ -150,14 +150,20 @@ void AnimationSprite::updatePosition()
 {
 	if (!isHurt_) {
 		if (moveDir_ != 0) {
-			runAction(MoveBy::create(0.0001, Vec2(moveDir_ * speedX_, 0)));
-			//getPhysicsBody()->setVelocity();
+			//runAction(MoveBy::create(0.0001, Vec2(moveDir_ * speedX_, 0)));
+			getPhysicsBody()->setVelocity(Vec2(moveDir_ * speedX_, getPhysicsBody()->getVelocity().y));
 		}
 		if (isJumpA_) {
-			runAction(JumpBy::create(0.55, Vec2(0, jumpHeight_), jumpHeight_, 1));
+			//runAction(JumpBy::create(0.55, Vec2(0, jumpHeight_), jumpHeight_, 1));
+			getPhysicsBody()->setVelocity(Vec2(getPhysicsBody()->getVelocity().x, 10));
 			isJumpA_ = false;
 		}
 	}
+}
+
+int AnimationSprite::getDir()
+{
+	return moveDir_;
 }
 
 void AnimationSprite::animationEventHandler_(cocos2d::EventCustom* event)

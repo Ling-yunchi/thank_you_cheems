@@ -1,1 +1,57 @@
 #include "Cheems.h"
+#include "Base/ConstValue.h"
+
+bool Cheems::init()
+{
+	AnimationSprite::initWithNameAndSize("cheems", Size(220, 300);
+
+	getPhysicsBody()->setCategoryBitmask(CheemsCateoryBitmask);
+	getPhysicsBody()->setCollisionBitmask(CheemsCollisionBitmask);
+	getPhysicsBody()->setContactTestBitmask(CheemsContactTestBitmask);
+	setScale(0.1);
+
+	return true;
+}
+
+bool Cheems::CheemsAttact(int directon, float monster_x, float monster_y)
+{
+	if (directon == 1)
+	{
+		Rect RightAttact(this->getPositionX() + 22,this->getPositionY(),30,30);
+		Rect soybean(monster_x, monster_y, 60, 39);
+		return RightAttact.intersectsRect(soybean);
+	}
+	else if(directon==-1)
+	{
+		Rect LeftAttact(this->getPositionX() - 30, this->getPositionY(), 30, 30);
+		Rect soybean(monster_x, monster_y, 60, 39);
+		return LeftAttact.intersectsRect(soybean);
+	}
+}
+
+int Cheems::getHP()
+{
+	return HP;
+}
+
+void Cheems::setHP(int Hp)
+{
+	MAXHP = Hp;
+}
+
+Cheems* Cheems::create()
+{
+	auto cheems = new (std::nothrow) Cheems();
+	if (cheems && cheems->init()) {
+		cheems->autorelease();
+		return cheems;
+	}
+	CC_SAFE_FREE(cheems);
+	return nullptr;
+}
+
+void Cheems::hurt()
+{
+	AnimationSprite::hurt();
+	HP -= 1;
+}
