@@ -44,7 +44,7 @@ void GameScene::createSprites()
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(),pos["y"].asFloat());
 	cheems_->setScale(0.1);
-	cheems_->getPhysicsBody()->setCategoryBitmask(0x1);a
+	cheems_->getPhysicsBody()->setCategoryBitmask(0x1);
 	cheems_->getPhysicsBody()->setCollisionBitmask(0x1);
 	cheems_->getPhysicsBody()->setContactTestBitmask(0x2);
 	map_->addChild(cheems_, 999);
@@ -68,7 +68,7 @@ void GameScene::createSprites()
 
 	map_->addChild(soybean, 999);
 	
-	Drop* drop = Drop::create();
+	Drop* drop = Drop::create(soybean->getPosition(),cheems_->getPosition());
 	drop->setPosition(VisibleRect::center());
 	map_->addChild(drop);
 }
@@ -171,8 +171,14 @@ void GameScene::createListener()
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = [this](PhysicsContact& contact) {
-		log("%f,%f", cheems_->getPosition().x, cheems_->getPosition().y);
-		cheems_->down();
+		int tagA = contact.getShapeA()->getTag(), tagB = contact.getShapeB()->getTag();
+		if ((tagA == CheemsTag && tagB == GroundTag) || (tagA == GroundTag && tagB == CheemsTag))
+			cheems_->down();
+		if ((tagA == CheemsTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == CheemsTag))
+			cheems_->hurt();
+		if((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
+			cheems_->hurt();
+		
 		return true;
 	};
 	eventDispatcher_->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -207,7 +213,12 @@ void GameScene::updateAttack()
 
 void GameScene::updateMonsters()
 {
-	//TODO : Move, Attack; 
+	for (auto monster : monsters) {
+
+		if(monster->getPosition().distance(cheems_->getPosition())<=500) {
+			
+		}
+	}
 }
 
 void GameScene::updateHeart()
