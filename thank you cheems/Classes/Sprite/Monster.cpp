@@ -1,15 +1,16 @@
 #include "Monster.h"
 #include "Base/ConstValue.h"
+#include "AnimationSprite.h"
 
 void Monster::Move()
 {
-    auto action = MoveBy::create(1, Vec2(random(-1, 1) * 99, 0));
-    runAction(action);
+	AnimationSprite::move(random(-1, 1));
 }
 
-void Monster::Attack()
+void Monster::attack()
 {
 	AnimationSprite::attack();
+	IsAttack = true;
 }
 
 Monster* Monster::create()
@@ -36,6 +37,7 @@ bool Monster::init()
 	return true;
 }
 
+/*
 void Monster::UpdateMove()
 {
 	int sec = 1;
@@ -62,4 +64,36 @@ bool Monster::UpdateAttack()
 
 
 	return IsAttack;
+}
+*/
+
+bool Monster::UpdateTimer()
+{
+	int sec1 = 1;
+	TimerMove++;
+	if (TimerMove == 60 * sec1)
+	{
+		TimerMove = 0;
+		Monster::Move();
+	}
+
+	int sec2 = 1;
+	if (IsAttack == true && TimerAttack < 0)
+	{
+		TimerAttack = 60 * sec2;
+	}
+	TimerAttack--;
+	if (TimerAttack < 0)
+	{
+		IsAttack = false;
+	}
+
+
+	return IsAttack;
+}
+
+void Monster::die()
+{
+	getPhysicsBody()->release();
+	setPhysicsBody(nullptr);
 }
