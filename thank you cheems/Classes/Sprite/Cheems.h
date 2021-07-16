@@ -9,10 +9,10 @@ class Cheems :public AnimationSprite
 	bool init() override;
 	bool isattack;
 	int timerAttack;
-	bool ishurt;
+	bool ishurt = false;
 	int timerHurt;
 public:
-	bool CheemsAttact(int directon, std::list<Monster*> monsters);
+	bool CheemsAttact(int directon, std::list<Monster*> &monsters);
 	int getHP();
 	static Cheems* create();
 	void hurt();

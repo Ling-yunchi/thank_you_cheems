@@ -3,8 +3,10 @@
 
 bool Cheems::init()
 {
+	HP = 3;
+	
 	AnimationSprite::initWithNameAndSize("cheems", Size(220, 300));
-	setTag(CheemsTag);
+	getPhysicsBody()->setTag(CheemsTag);
 	getPhysicsBody()->setCategoryBitmask(CheemsCateoryBitmask);
 	getPhysicsBody()->setCollisionBitmask(CheemsCollisionBitmask);
 	getPhysicsBody()->setContactTestBitmask(CheemsContactTestBitmask);
@@ -13,7 +15,7 @@ bool Cheems::init()
 	return true;
 }
 
-bool Cheems::CheemsAttact(int directon, std::list<Monster*> monsters)
+bool Cheems::CheemsAttact(int directon, std::list<Monster*> &monsters)
 {
 	AnimationSprite::attack();
 	isattack = true;
@@ -52,9 +54,11 @@ Cheems* Cheems::create()
 
 void Cheems::hurt()
 {
-	ishurt = true;
-	AnimationSprite::hurt();
-	HP -= 1;
+	if(ishurt!=true) {
+		ishurt = true;
+		AnimationSprite::hurt();
+		HP -= 1;
+	}
 }
 
 void Cheems::updateTimer()

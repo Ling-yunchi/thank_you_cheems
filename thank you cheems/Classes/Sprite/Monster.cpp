@@ -26,7 +26,7 @@ Monster* Monster::create()
 bool Monster::init()
 {
 	AnimationSprite::initWithNameAndSize("soybean", Size(300, 195));
-	setTag(SoybeanTag);
+	getPhysicsBody()->setTag(SoybeanTag);
 	getPhysicsBody()->setCategoryBitmask(SoybeanCateoryBitmask);
 	getPhysicsBody()->setCollisionBitmask(SoybeanCollisionBitmask);
 	getPhysicsBody()->setContactTestBitmask(SoybeanContactTestBitmask);

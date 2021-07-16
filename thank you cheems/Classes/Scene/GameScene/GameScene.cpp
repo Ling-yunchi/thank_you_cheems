@@ -44,22 +44,28 @@ void GameScene::createSprites()
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(), pos["y"].asFloat());
 	map_->addChild(cheems_, 999);
+	//TODO
 	map_->setPosition(200,-400);
 
-	//auto objGroup = map_->getObjectGroup("soybean");
-	//auto& objs = objGroup->getObjects();
-	//for(auto& obj : objs) {
-	//	auto& vmap = obj.asValueMap();
-	//	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
-	//	soybean->setScale(0.2);
-	//	soybean->setPosition(Vec2(vmap["x"].asFloat(), vmap["y"].asFloat()));
-	//	map_->addChild(soybean, 999);
-	//}
+
+	auto objGroup = map_->getObjectGroup("soybean");
+	auto& objs = objGroup->getObjects();
+	for(auto& obj : objs) {
+		auto& vmap = obj.asValueMap();
+		auto soybean = Monster::create();
+		soybean->setScale(0.2);
+		soybean->setPosition(Vec2(vmap["x"].asFloat(), vmap["y"].asFloat()));
+		monsters.push_back(soybean);
+		map_->addChild(soybean, 999);
+	}
+	
 	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
 	soybean->setScale(0.2);
 	soybean->setPosition(VisibleRect::center());
 	map_->addChild(soybean, 999);
 
+
+	//TEST
 	Drop* drop = Drop::create(soybean->getPosition(), cheems_->getPosition());
 	drop->setPosition(VisibleRect::center());
 	map_->addChild(drop);
@@ -121,7 +127,7 @@ void GameScene::createListener()
 			cheems_->jump();
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_J:
-			cheems_->attack();
+			cheems_->CheemsAttact(dir_, monsters);
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_K:
 			cheems_->hurt();
@@ -179,6 +185,7 @@ void GameScene::createListener()
 void GameScene::update(float delta)
 {
 	cheems_->updatePosition();
+	cheems_->updateTimer();
 	
 	moveMap();
 	updateAttack();
@@ -207,9 +214,11 @@ void GameScene::updateAttack()
 void GameScene::updateMonsters()
 {
 	for (auto monster : monsters) {
-
-		if (monster->getPosition().distance(cheems_->getPosition()) <= 500) {
-			addChild(Drop::create(monster->getPosition(), cheems_->getPosition()));
+		if (monster->getPosition().distance(cheems_->getPosition()) <= 150) {
+			if (!monster->IsAttack) {
+				monster->attack();
+				map_->addChild(Drop::create(monster->getPosition(), cheems_->getPosition()));
+			}
 		}
 		
 	}
@@ -222,7 +231,7 @@ void GameScene::updateHeart()
 		auto heart = Sprite::create("heart.png");
 		auto empty_heart = Sprite::create("empty_heart.png");
 		for (int i = 0; i < 3; i++)
-			if (i < hp_)
+			if (i < cheems_->getHP())
 				hearts_[i]->setTexture(heart->getTexture());
 			else
 				hearts_[i]->setTexture(empty_heart->getTexture());

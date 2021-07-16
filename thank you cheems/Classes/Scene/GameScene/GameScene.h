@@ -17,7 +17,7 @@ class GameScene :public Scene
 {
 private:
 	Cheems* cheems_;
-	std::list<Sprite*> monsters;
+	std::list<Monster*> monsters;
 	Global* global_;
 	EventDispatcher* eventDispatcher_;
 	TMXTiledMap* map_;
