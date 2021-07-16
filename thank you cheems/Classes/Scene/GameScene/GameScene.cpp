@@ -40,10 +40,11 @@ void GameScene::createSprites()
 	factory->loadDragonBonesData("Animation/Sweating_soybean/Sweating_soybean_ske.json", "soybean");
 	factory->loadTextureAtlasData("Animation/Sweating_soybean/Sweating_soybean_tex.json", "soybean");
 
-	cheems_ = AnimationSprite::create("cheems", Size(220, 300));
+	cheems_ = Cheems::create();
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
-	cheems_->setPosition(pos["x"].asFloat(),pos["y"].asFloat());
+	cheems_->setPosition(pos["x"].asFloat(), pos["y"].asFloat());
 	map_->addChild(cheems_, 999);
+	map_->setPosition(200,-400);
 
 	//auto objGroup = map_->getObjectGroup("soybean");
 	//auto& objs = objGroup->getObjects();
@@ -58,8 +59,8 @@ void GameScene::createSprites()
 	soybean->setScale(0.2);
 	soybean->setPosition(VisibleRect::center());
 	map_->addChild(soybean, 999);
-	
-	Drop* drop = Drop::create(soybean->getPosition(),cheems_->getPosition());
+
+	Drop* drop = Drop::create(soybean->getPosition(), cheems_->getPosition());
 	drop->setPosition(VisibleRect::center());
 	map_->addChild(drop);
 }
@@ -73,7 +74,6 @@ void GameScene::createMenu()
 	addChild(hp, 999);
 
 	hp_ = 3;//cheems_.getHP();
-	hearts_.resize(3);
 	for (int i = 0; i < hp_; i++) {
 		auto h = Sprite::create("heart.png");
 		h->setScale(3);
@@ -85,7 +85,7 @@ void GameScene::createMenu()
 	//��ͣ��ť
 	auto label = Label::create("pause", FONT_MARKER_FELT, 40);
 	auto pause = MenuItemLabel::create(label, [&](Ref* sender) {
-		Director::getInstance()->pushScene(PauseScene::createScene());	
+		Director::getInstance()->pushScene(PauseScene::createScene());
 	});
 	auto menu = Menu::create(pause, NULL);
 	menu->setPosition(Vec2(990, 660));
@@ -162,14 +162,15 @@ void GameScene::createListener()
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = [this](PhysicsContact& contact) {
-		int tagA = contact.getShapeA()->getTag(), tagB = contact.getShapeB()->getTag();
+		int tagA = contact.getShapeA()->getBody()->getTag(), tagB = contact.getShapeB()->getBody()->getTag();
+		log("%d,%d", tagA, tagB);
 		if ((tagA == CheemsTag && tagB == GroundTag) || (tagA == GroundTag && tagB == CheemsTag))
 			cheems_->down();
 		if ((tagA == CheemsTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == CheemsTag))
 			cheems_->hurt();
-		if((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
+		if ((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
 			cheems_->hurt();
-		
+
 		return true;
 	};
 	eventDispatcher_->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -178,6 +179,7 @@ void GameScene::createListener()
 void GameScene::update(float delta)
 {
 	cheems_->updatePosition();
+	cheems_->updateTimer();
 	moveMap();
 	updateAttack();
 	updateMonsters();
@@ -206,31 +208,33 @@ void GameScene::updateMonsters()
 {
 	for (auto monster : monsters) {
 
-		if(monster->getPosition().distance(cheems_->getPosition())<=500) {
-			
+		if (monster->getPosition().distance(cheems_->getPosition()) <= 500) {
+			addChild(Drop::create(monster->getPosition(), cheems_->getPosition()));
 		}
+		
 	}
 }
 
 void GameScene::updateHeart()
 {
 	//����Ѫ����ʾ
-	/*if (cheems_.getHP != hp_) {
+	if (cheems_->getHP() != hp_) {
 		auto heart = Sprite::create("heart.png");
 		auto empty_heart = Sprite::create("empty_heart.png");
-		for (int i = 0; i < cheems_.getMaxHP; i++)
+		for (int i = 0; i < 3; i++)
 			if (i < hp_)
 				hearts_[i]->setTexture(heart->getTexture());
 			else
 				hearts_[i]->setTexture(empty_heart->getTexture());
-	}*/
+		hp_ = cheems_->getHP();
+	}
 }
 
 void GameScene::judgeGameOver()
 {
 	//if (monsters.empty())
 	//	gameOver(true);
-	
+
 	//if(cheems_.getHP()==0)
 	//	gameOver(false);
 }
@@ -242,8 +246,8 @@ void GameScene::moveMap()
 
 	static float x = b.x;
 	static float y = b.y;
-	
-	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x)*map_->getScale(), y - b.y)));
+
+	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), y - b.y)));
 
 	x = b.x;
 	y = b.y;

@@ -8,14 +8,16 @@
 #include "Sprite/AnimationSprite.h"
 #include <list>
 
+#include "Sprite/Cheems.h"
+#include "Sprite/Drop.h"
+
 using namespace cocos2d;
 
 class GameScene :public Scene
 {
 private:
-	AnimationSprite* cheems_;
+	Cheems* cheems_;
 	std::list<Sprite*> monsters;
-	std::list<Sprite*> flyItems;
 	Global* global_;
 	EventDispatcher* eventDispatcher_;
 	TMXTiledMap* map_;
