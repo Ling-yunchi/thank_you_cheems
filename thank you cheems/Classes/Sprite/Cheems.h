@@ -1,17 +1,21 @@
 #pragma once
 #include "cocos2d.h"
 #include "AnimationSprite.h"
+#include "Monster.h"	
 
-class Cheems:public AnimationSprite
+class Cheems :public AnimationSprite
 {
 	int HP;
-	int MAXHP;
 	bool init() override;
+	bool isattack;
+	int timerAttack;
+	bool ishurt;
+	int timerHurt;
 public:
-	bool CheemsAttact(int directon, float monster_x, float monster_y);
+	bool CheemsAttact(int directon, std::list<monster> monsters);
 	int getHP();
-	void setHP(int Hp);
 	static Cheems* create();
 	void hurt();
+	void updateTimer();
+	bool getIsattact();
 };
-
