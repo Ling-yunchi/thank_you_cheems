@@ -43,10 +43,6 @@ void GameScene::createSprites()
 	cheems_ = AnimationSprite::create("cheems", Size(220, 300));
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(),pos["y"].asFloat());
-	cheems_->setScale(0.1);
-	cheems_->getPhysicsBody()->setCategoryBitmask(0x1);a
-	cheems_->getPhysicsBody()->setCollisionBitmask(0x1);
-	cheems_->getPhysicsBody()->setContactTestBitmask(0x2);
 	map_->addChild(cheems_, 999);
 
 	//auto objGroup = map_->getObjectGroup("soybean");
@@ -61,11 +57,6 @@ void GameScene::createSprites()
 	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
 	soybean->setScale(0.2);
 	soybean->setPosition(VisibleRect::center());
-	soybean->getPhysicsBody()->setCategoryBitmask(0x2);
-	soybean->getPhysicsBody()->setCollisionBitmask(0x1);
-	soybean->getPhysicsBody()->setContactTestBitmask(0x1);
-
-
 	map_->addChild(soybean, 999);
 	
 	Drop* drop = Drop::create();
