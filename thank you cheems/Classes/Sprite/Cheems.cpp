@@ -13,10 +13,13 @@ bool Cheems::init()
 	return true;
 }
 
-bool Cheems::CheemsAttact(int directon, std::list<Monster> monsters)
+bool Cheems::CheemsAttact(int directon, std::list<Monster*> monsters)
 {
 	AnimationSprite::attack();
 	isattack = true;
+	for (auto monster : monsters) {
+		monster->getPosition();
+	}
 	if (directon == 1)
 	{
 		Rect RightAttact(this->getPositionX() + 22, this->getPositionY(), 30, 30);
