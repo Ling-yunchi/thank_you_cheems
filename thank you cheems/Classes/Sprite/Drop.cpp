@@ -30,8 +30,15 @@ bool Drop::init(cocos2d::Vec2 soybean, cocos2d::Vec2 cheems)
 	setScale(0.1);
 	
 	setPosition(soybean);
-
-	runAction(cocos2d::MoveBy::create(100, (cheems- soybean)*10));
+	
+	//if(cheems.x<soybean.x)
+	//	setRotation(90-soybean.getAngle(cheems)* 57.29578);
+	//else
+	//	setRotation(soybean.getAngle(cheems) * 57.29578 - 90);
+	
+	auto v = cheems - soybean;
+	
+	body->setVelocity(v / v.length() * 150);
 	
 	return true;
 }

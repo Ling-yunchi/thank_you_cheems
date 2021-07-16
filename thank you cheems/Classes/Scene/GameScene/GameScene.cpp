@@ -220,7 +220,8 @@ void GameScene::updateMonsters()
 				map_->addChild(Drop::create(monster->getPosition(), cheems_->getPosition()));
 			}
 		}
-		
+		monster->updatePosition();
+		monster->UpdateTimer();
 	}
 }
 
@@ -256,7 +257,7 @@ void GameScene::moveMap()
 	static float x = b.x;
 	static float y = b.y;
 
-	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), y - b.y)));
+	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), (y - b.y)*map_->getScale())));
 
 	x = b.x;
 	y = b.y;
@@ -294,6 +295,8 @@ bool GameScene::init()
 {
 	if (!Scene::initWithPhysics())
 		return false;
+
+	getPhysicsWorld()->setGravity(Vec2(0, -980));
 
 	loadMap();
 	createSprites();
