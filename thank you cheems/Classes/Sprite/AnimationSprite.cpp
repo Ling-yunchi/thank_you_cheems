@@ -33,7 +33,7 @@ AnimationSprite::AnimationSprite()
 }
 
 bool AnimationSprite::initWithNameAndSize(std::string animationName, Size size)
-{
+{	
 	armatureDisplay_ = factory_->buildArmatureDisplay(animationName);
 	if (!armatureDisplay_)
 		return false;

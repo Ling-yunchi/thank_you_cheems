@@ -5,6 +5,7 @@
 #include "VisibleRect.h"
 #include "ui/UIRichText.h"
 #include "Base/ConstValue.h"
+#include "Sprite/Drop.h"
 
 #define DEBUG
 
@@ -43,7 +44,7 @@ void GameScene::createSprites()
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(),pos["y"].asFloat());
 	cheems_->setScale(0.1);
-	cheems_->getPhysicsBody()->setCategoryBitmask(0x1);
+	cheems_->getPhysicsBody()->setCategoryBitmask(0x1);a
 	cheems_->getPhysicsBody()->setCollisionBitmask(0x1);
 	cheems_->getPhysicsBody()->setContactTestBitmask(0x2);
 	map_->addChild(cheems_, 999);
@@ -67,11 +68,8 @@ void GameScene::createSprites()
 
 	map_->addChild(soybean, 999);
 	
-	auto drop = Sprite::create("drop.png");
+	Drop* drop = Drop::create();
 	drop->setPosition(VisibleRect::center());
-	auto body = cocos2d::PhysicsBody::createCircle(60);
-	drop->setScale(0.1);
-	drop->setPhysicsBody(body);
 	map_->addChild(drop);
 }
 
