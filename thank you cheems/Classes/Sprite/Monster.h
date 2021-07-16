@@ -14,9 +14,10 @@ public:
     int TimerAttack = 0;
     int TimerMove = 0;
     void Move();
-    void Attack();
+    void attack();
     static Monster* create();
     //void UpdateMove();
     //bool UpdateAttack();
     bool UpdateTimer();//·µ»ØIsAttack
+    void die();
 };

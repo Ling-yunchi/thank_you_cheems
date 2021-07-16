@@ -7,7 +7,7 @@ void Monster::Move()
 	AnimationSprite::move(random(-1, 1));
 }
 
-void Monster::Attack()
+void Monster::attack()
 {
 	AnimationSprite::attack();
 	IsAttack = true;
@@ -90,4 +90,10 @@ bool Monster::UpdateTimer()
 
 
 	return IsAttack;
+}
+
+void Monster::die()
+{
+	getPhysicsBody()->release();
+	setPhysicsBody(nullptr);
 }
