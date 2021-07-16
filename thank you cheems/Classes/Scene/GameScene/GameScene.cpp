@@ -1,4 +1,4 @@
-#include "GameScene.h"
+ï»¿#include "GameScene.h"
 
 #include "GameOverScene.h"
 #include "PauseScene.h"
@@ -59,14 +59,14 @@ void GameScene::createSprites()
 	soybean->setPosition(VisibleRect::center());
 	map_->addChild(soybean, 999);
 	
-	Drop* drop = Drop::create();
+	Drop* drop = Drop::create(soybean->getPosition(),cheems_->getPosition());
 	drop->setPosition(VisibleRect::center());
 	map_->addChild(drop);
 }
 
 void GameScene::createMenu()
 {
-	//HPÏÔÊ¾
+	//HPï¿½ï¿½Ê¾
 	auto hp = ui::RichText::create();
 	hp->pushBackElement(ui::RichElementText::create(1, Color3B::WHITE, 255, "H P : ", FONT_MARKER_FELT, 40));
 	hp->setPosition(Vec2(100, 660));
@@ -82,7 +82,7 @@ void GameScene::createMenu()
 		hearts_.push_back(h);
 	}
 
-	//ÔÝÍ£°´Å¥
+	//ï¿½ï¿½Í£ï¿½ï¿½Å¥
 	auto label = Label::create("pause", FONT_MARKER_FELT, 40);
 	auto pause = MenuItemLabel::create(label, [&](Ref* sender) {
 		Director::getInstance()->pushScene(PauseScene::createScene());	
@@ -162,8 +162,14 @@ void GameScene::createListener()
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = [this](PhysicsContact& contact) {
-		log("%f,%f", cheems_->getPosition().x, cheems_->getPosition().y);
-		cheems_->down();
+		int tagA = contact.getShapeA()->getTag(), tagB = contact.getShapeB()->getTag();
+		if ((tagA == CheemsTag && tagB == GroundTag) || (tagA == GroundTag && tagB == CheemsTag))
+			cheems_->down();
+		if ((tagA == CheemsTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == CheemsTag))
+			cheems_->hurt();
+		if((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
+			cheems_->hurt();
+		
 		return true;
 	};
 	eventDispatcher_->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -193,17 +199,22 @@ void GameScene::updateMove(int dir)
 
 void GameScene::updateAttack()
 {
-	//TODO: ¾ØÐÎ¼ì²â
+	//TODO: ï¿½ï¿½ï¿½Î¼ï¿½ï¿½
 }
 
 void GameScene::updateMonsters()
 {
-	//TODO : Move, Attack; 
+	for (auto monster : monsters) {
+
+		if(monster->getPosition().distance(cheems_->getPosition())<=500) {
+			
+		}
+	}
 }
 
 void GameScene::updateHeart()
 {
-	//¸üÐÂÑªÁ¿ÏÔÊ¾
+	//ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½ï¿½ï¿½Ê¾
 	/*if (cheems_.getHP != hp_) {
 		auto heart = Sprite::create("heart.png");
 		auto empty_heart = Sprite::create("empty_heart.png");
@@ -276,7 +287,7 @@ bool GameScene::init()
 	createMenu();
 	createListener();
 
-	//Ìí¼Óµ÷¶ÈÆ÷,Ê¹Ã¿Ò»Ö¡¶¼½øÈëupdateº¯Êý
+	//ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½,Ê¹Ã¿Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½updateï¿½ï¿½ï¿½ï¿½
 	this->scheduleUpdate();
 
 	return true;
