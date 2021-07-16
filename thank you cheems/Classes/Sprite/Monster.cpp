@@ -1,5 +1,5 @@
 #include "Monster.h"
-
+#include "Base/ConstValue.h"
 
 void Monster::Move()
 {
@@ -9,5 +9,29 @@ void Monster::Move()
 
 void Monster::Attack()
 {
-    //Attack¶¯»­²¥·Å
+	AnimationSprite::attack();
+}
+
+Monster* Monster::create()
+{
+	auto monster = new (std::nothrow) Monster();
+	if (monster && monster->init()) {
+		monster->autorelease();
+		return monster;
+	}
+	CC_SAFE_FREE(monster);
+	return nullptr;
+}
+
+bool Monster::init()
+{
+	AnimationSprite::initWithNameAndSize("soybean", Size(300, 195));
+	setTag(2);
+	getPhysicsBody()->setCategoryBitmask(SoybeanCateoryBitmask);
+	getPhysicsBody()->setCollisionBitmask(SoybeanCollisionBitmask);
+	getPhysicsBody()->setContactTestBitmask(SoybeanContactTestBitmask);
+
+	setScale(0.1);
+
+	return true;
 }
