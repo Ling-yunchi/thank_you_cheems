@@ -39,6 +39,7 @@ private:
 	void updateAttack();
 	void updateMonsters();
 	void updateHeart();
+	void judgeGameOver();
 	void moveMap();
 	void gameOver(bool res);
 
