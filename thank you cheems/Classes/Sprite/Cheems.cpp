@@ -13,9 +13,10 @@ bool Cheems::init()
 	setScale(0.1);
 
 	auto attackNode = Node::create();
-	attackArea = PhysicsBody::createBox(Size(30,30));
+	attackArea = PhysicsBody::createBox(Size(300,300));
 	attackNode->setPhysicsBody(attackArea);
-	attackNode->setPosition(-30,0);
+	attackNode->setPosition(-300,0);
+	attackArea->setGravityEnable(false);
 	attackArea->setTag(AttackTag);
 	attackArea->setCategoryBitmask(0);
 	attackArea->setCollisionBitmask(0);
