@@ -54,7 +54,7 @@ void GameOverScene::victory_menu_create()
 	auto save = Label::create("Save and Exit", FONT_MARKER_FELT, 40);
 	auto item = MenuItemLabel::create(save,[&](Ref* sender) {
 		GameOverScene::save();
-		Director::getInstance()->runWithScene(SaveChooseScene::createScene());
+		Director::getInstance()->replaceScene(SaveChooseScene::createScene());
 	});
 	auto menu = Menu::create(item, NULL);
 	menu->setPosition(Vec2(880, 80));
@@ -75,12 +75,12 @@ void GameOverScene::defeat_menu_create()
 	auto retry = Label::create("Retry", FONT_MARKER_FELT, 40);
 	retry->setTextColor(Color4B::RED);
 	auto retryItem = MenuItemLabel::create(retry, [&](Ref* sender) {
-		Director::getInstance()->runWithScene(GameScene::creatScsene());
+		Director::getInstance()->replaceScene(GameScene::creatScsene());
 	});
 	auto exit = Label::create("Exit", FONT_MARKER_FELT, 40);
 	exit->setTextColor(Color4B::RED);
 	auto exitItem = MenuItemLabel::create(exit, [&](Ref* sender) {
-		Director::getInstance()->runWithScene(SaveChooseScene::createScene());
+		Director::getInstance()->replaceScene(SaveChooseScene::createScene());
 	});
 	
 	auto menu = Menu::create(retryItem, exitItem, NULL);

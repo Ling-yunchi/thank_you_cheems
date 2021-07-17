@@ -44,6 +44,7 @@ private:
 	void moveMap();
 	void gameOver(bool res);
 
+	void defeat(float);
 public:
 	GameScene();
 	~GameScene();
@@ -52,3 +53,5 @@ public:
 	
 	CREATE_FUNC(GameScene);
 };
+
+

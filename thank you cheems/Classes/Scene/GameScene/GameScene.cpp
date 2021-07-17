@@ -7,7 +7,7 @@
 #include "Base/ConstValue.h"
 #include "Sprite/Drop.h"
 
-#define DEBUG
+//#define DEBUG
 
 void GameScene::loadMap()
 {
@@ -45,13 +45,13 @@ void GameScene::createSprites()
 	cheems_->setPosition(pos["x"].asFloat(), pos["y"].asFloat());
 	map_->addChild(cheems_, 999);
 	//TODO
-	map_->setPosition(200,-400);
+	map_->setPosition(200, -400);
 
 
 	auto objGroup = map_->getObjectGroup("monsters");
 	auto& objs = objGroup->getObjects();
 	int cnt = 1;
-	for(auto& obj : objs) {
+	for (auto& obj : objs) {
 		auto& vmap = obj.asValueMap();
 		auto soybean = Monster::create();
 		soybean->setScale(0.2);
@@ -176,7 +176,7 @@ void GameScene::createListener()
 					it++;
 			}
 		}
-			
+
 
 
 		return true;
@@ -188,7 +188,7 @@ void GameScene::update(float delta)
 {
 	cheems_->updatePosition();
 	cheems_->updateTimer();
-	
+
 	moveMap();
 	updateMonsters();
 	updateHeart();
@@ -213,7 +213,7 @@ void GameScene::updateMonsters()
 		if (monster->getPosition().distance(cheems_->getPosition()) <= 150) {
 			if (!monster->IsAttack) {
 				monster->attack();
-				map_->addChild(Drop::create(monster->getPosition(), cheems_->getPosition()));
+				map_->addChild(Drop::create(monster->getPosition(), cheems_->getPosition()), 1000);
 			}
 		}
 		monster->updatePosition();
@@ -238,11 +238,18 @@ void GameScene::updateHeart()
 
 void GameScene::judgeGameOver()
 {
-	//if (monsters.empty())
-	//	gameOver(true);
+	if (monsters.empty())
+		gameOver(true);
 
-	//if(cheems_.getHP()==0)
-	//	gameOver(false);
+	if (cheems_->getHP() == 0) {
+		cheems_->die();
+		scheduleOnce(schedule_selector(GameScene::defeat), 3);
+	}
+}
+
+void GameScene::defeat(float dt)
+{
+	gameOver(false);
 }
 
 void GameScene::moveMap()
@@ -253,7 +260,7 @@ void GameScene::moveMap()
 	static float x = b.x;
 	static float y = b.y;
 
-	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), (y - b.y)*map_->getScale())));
+	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), (y - b.y) * map_->getScale())));
 
 	x = b.x;
 	y = b.y;
@@ -261,7 +268,7 @@ void GameScene::moveMap()
 
 void GameScene::gameOver(bool res)
 {
-	Director::getInstance()->runWithScene(GameOverScene::createScene(res));
+	Director::getInstance()->replaceScene(GameOverScene::createScene(res));
 }
 
 GameScene::GameScene() :

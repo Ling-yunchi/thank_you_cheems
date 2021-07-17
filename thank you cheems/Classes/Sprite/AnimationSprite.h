@@ -34,6 +34,10 @@ public:
 
 	bool isDie() const { return isDieComplete_; }
 
+	//运动变量
+	float speedX_;
+	float jumpHeight_;
+
 private:
 	dragonBones::CCFactory* factory_;
 	dragonBones::CCArmatureDisplay* armatureDisplay_;
@@ -46,10 +50,6 @@ private:
 	 */
 	dragonBones::AnimationState* attackState_;
 	dragonBones::AnimationState* moveState_;
-
-	//运动变量
-	float speedX_;
-	float jumpHeight_;
 
 	//状态变量
 	bool isJumpA_;		//正在跳跃

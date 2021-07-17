@@ -36,7 +36,7 @@ bool Monster::init()
 
 	setScale(0.1);
 
-	
+	speedX_ = 50;
 
 	return true;
 }
