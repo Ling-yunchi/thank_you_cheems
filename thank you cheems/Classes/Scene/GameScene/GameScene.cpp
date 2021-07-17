@@ -44,9 +44,14 @@ void GameScene::createSprites()
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(), pos["y"].asFloat());
 	map_->addChild(cheems_, 999);
-	//TODO
-	map_->setPosition(200, -400);
+	auto p = VisibleRect::center()*1.07;
+	auto c = map_->convertToWorldSpace(cheems_->getPosition());
+	auto m = convertToWorldSpace(map_->getPosition());
+	
+	map_->setPosition(p-c);
 
+	last_x_ = cheems_->getPosition().x;
+	last_y_ = cheems_->getPosition().y;
 
 	auto objGroup = map_->getObjectGroup("monsters");
 	auto& objs = objGroup->getObjects();
@@ -243,6 +248,7 @@ void GameScene::judgeGameOver()
 	if (cheems_->getHP() == 0) {
 		cheems_->die();
 		scheduleOnce(schedule_selector(GameScene::defeat), 3);
+		cheems_->hurt();
 	}
 }
 
@@ -256,13 +262,10 @@ void GameScene::moveMap()
 	auto a = map_->getPosition();
 	auto b = cheems_->getPosition();
 
-	static float x = b.x;
-	static float y = b.y;
+	map_->runAction(MoveBy::create(0.1, Vec2((last_x_ - b.x) * map_->getScale(), (last_y_ - b.y) * map_->getScale())));
 
-	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), (y - b.y) * map_->getScale())));
-
-	x = b.x;
-	y = b.y;
+	last_x_ = b.x;
+	last_y_ = b.y;
 }
 
 void GameScene::gameOver(bool res)

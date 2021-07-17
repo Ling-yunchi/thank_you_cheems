@@ -28,6 +28,8 @@ private:
 	bool right_ = false;
 	int dir_ = 0;
 	int hp_ = 0;
+	float last_x_;
+	float last_y_;
 
 	//资源加载函数
 	void loadMap();
