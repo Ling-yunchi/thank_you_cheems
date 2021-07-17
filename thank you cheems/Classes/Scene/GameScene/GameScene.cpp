@@ -170,15 +170,14 @@ void GameScene::createListener()
 		if ((tagA == AttackTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == AttackTag)) {
 			auto tag = tagA == SoybeanTag ? contact.getShapeA()->getBody()->getNode()->getTag() : contact.getShapeB()->getBody()->getNode()->getTag();
 			for (auto it = monsters.begin(); it != monsters.end();) {
-				if ((*it)->getTag() == tag)
+				if ((*it)->getTag() == tag) {
+					(*it)->die();
 					monsters.erase(it++);
+				}
 				else
 					it++;
 			}
 		}
-
-
-
 		return true;
 	};
 	eventDispatcher_->addEventListenerWithSceneGraphPriority(contactListener, this);

@@ -99,6 +99,7 @@ bool Monster::UpdateTimer()
 void Monster::die()
 {
 	AnimationSprite::die();
-	getPhysicsBody()->release();
-	setPhysicsBody(nullptr);
+	getPhysicsBody()->setCategoryBitmask(0);
+	getPhysicsBody()->setCollisionBitmask(0);
+	getPhysicsBody()->setContactTestBitmask(0);
 }
