@@ -11,8 +11,9 @@ class Cheems :public AnimationSprite
 	int timerAttack;
 	bool ishurt = false;
 	int timerHurt;
+	PhysicsBody* attackArea;
 public:
-	void CheemsAttact(int directon, std::list<Monster*> monsters);
+	void attack();
 	int getHP();
 	static Cheems* create();
 	void hurt();

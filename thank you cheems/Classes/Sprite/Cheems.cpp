@@ -4,42 +4,36 @@
 bool Cheems::init()
 {
 	AnimationSprite::initWithNameAndSize("cheems", Size(220, 300));
-	setTag(CheemsTag);
+	getPhysicsBody()->setTag(CheemsTag);
 	getPhysicsBody()->setCategoryBitmask(CheemsCateoryBitmask);
 	getPhysicsBody()->setCollisionBitmask(CheemsCollisionBitmask);
 	getPhysicsBody()->setContactTestBitmask(CheemsContactTestBitmask);
 	setScale(0.1);
 
+	auto attackNode = Node::create();
+	attackArea = PhysicsBody::createBox(Size(30,30));
+	attackNode->setPhysicsBody(attackArea);
+	attackNode->setPosition(-30,0);
+	attackArea->setTag();
+	attackArea->setCategoryBitmask();
+	attackArea->setCollisionBitmask();
+	attackArea->setContactTestBitmask();
 
+	addChild(attackNode);
+	
 	return true;
 }
 
 
-void Cheems::CheemsAttact(int directon, std::list<Monster*> monsters)
+void Cheems::attack()
 {
-	AnimationSprite::attack();
-	isattack = true;
-	for (auto it = monsters.begin(); it != monsters.end();) {
-		if (directon == 1)
-		{
-			Rect RightAttact(this->getPositionX() + 22, this->getPositionY(), 30, 30);
-			Rect soybean((*it)->getPositionX(), (*it)->getPositionY(), 60, 39);
-			
-			if (RightAttact.intersectsRect(soybean))
-				monsters.erase(it++);
-			else
-				it++;
-		}
-		else if (directon == -1)
-		{
-			Rect LeftAttact(this->getPositionX() - 30, this->getPositionY(), 30, 30);
-			Rect soybean((*it)->getPositionX(), (*it)->getPositionY(), 60, 39);
-			
-			if (LeftAttact.intersectsRect(soybean))
-				monsters.erase(it++);
-			else
-				it++;
-		}
+	if (isattack != true)
+	{
+		AnimationSprite::attack();
+		isattack = true;
+		attackArea->setCategoryBitmask();
+		attackArea->setCollisionBitmask();
+		attackArea->setContactTestBitmask();
 	}
 }
 
@@ -76,6 +70,9 @@ void Cheems::updateTimer()
 	if (timerAttack == 100)
 	{
 		isattack = false;
+		attackArea->setCategoryBitmask(0);
+		attackArea->setCollisionBitmask(0);
+		attackArea->setContactTestBitmask(0);
 		timerAttack = 0;
 	}
 
