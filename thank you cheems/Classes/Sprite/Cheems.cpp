@@ -16,10 +16,10 @@ bool Cheems::init()
 	attackArea = PhysicsBody::createBox(Size(30,30));
 	attackNode->setPhysicsBody(attackArea);
 	attackNode->setPosition(-30,0);
-	attackArea->setTag();
-	attackArea->setCategoryBitmask();
-	attackArea->setCollisionBitmask();
-	attackArea->setContactTestBitmask();
+	attackArea->setTag(AttackTag);
+	attackArea->setCategoryBitmask(0);
+	attackArea->setCollisionBitmask(0);
+	attackArea->setContactTestBitmask(0);
 
 	addChild(attackNode);
 	
@@ -33,9 +33,9 @@ void Cheems::attack()
 	{
 		AnimationSprite::attack();
 		isattack = true;
-		attackArea->setCategoryBitmask();
-		attackArea->setCollisionBitmask();
-		attackArea->setContactTestBitmask();
+		attackArea->setCategoryBitmask(AttackCateoryBitmask);
+		attackArea->setCollisionBitmask(AttackCollisionBitmask);
+		attackArea->setContactTestBitmask(AttackContactTestBitmask);
 	}
 }
 

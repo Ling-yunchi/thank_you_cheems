@@ -7,7 +7,7 @@
 #include "Base/ConstValue.h"
 #include "Sprite/Drop.h"
 
-//#define DEBUG
+#define DEBUG
 
 void GameScene::loadMap()
 {
@@ -118,7 +118,7 @@ void GameScene::createListener()
 			cheems_->jump();
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_J:
-			cheems_->CheemsAttact(dir_, monsters);
+			cheems_->attack();
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_K:
 			cheems_->hurt();
