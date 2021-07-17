@@ -1,6 +1,5 @@
 /**
  * °ïÖú³¡¾°
- * @author wr
  */
 #pragma once
 #include "cocos2d.h"

@@ -24,6 +24,8 @@ bool GameOverScene::init()
 	if (!Scene::init())
 		return false;
 
+	log("init begin");
+	
 	if (victory_) {
 		victory_front_create();
 		victory_menu_create();
@@ -33,6 +35,8 @@ bool GameOverScene::init()
 		defeat_menu_create();
 	}
 
+	log("init finished");
+	
 	return true;
 }
 

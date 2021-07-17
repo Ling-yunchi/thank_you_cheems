@@ -1,6 +1,5 @@
 /**
  * ¥Êµµ¿‡
- * @author wr
  */
 #pragma once
 #include <ctime>

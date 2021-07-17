@@ -1,6 +1,5 @@
 /**
  * 全局变量存储 
- * @author wr
  */
 #pragma once
 #include <string>

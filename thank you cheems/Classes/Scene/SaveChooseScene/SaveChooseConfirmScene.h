@@ -1,6 +1,5 @@
 /**
  * 确定选择存档的界面
- * @author wr
  */
 #pragma once
 #include "cocos2d.h"

@@ -7,7 +7,7 @@
 #include "Base/ConstValue.h"
 #include "Sprite/Drop.h"
 
-#define DEBUG
+// #define DEBUG
 
 void GameScene::loadMap()
 {
@@ -114,9 +114,9 @@ void GameScene::createListener()
 			updateMove(1);
 			break;
 
-		case cocos2d::EventKeyboard::KeyCode::KEY_S:
-			cheems_->down();
-			break;
+		//case cocos2d::EventKeyboard::KeyCode::KEY_S:
+		//	cheems_->down();
+		//	break;
 
 		case cocos2d::EventKeyboard::KeyCode::KEY_W:
 		case cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -125,12 +125,12 @@ void GameScene::createListener()
 		case cocos2d::EventKeyboard::KeyCode::KEY_J:
 			cheems_->attack();
 			break;
-		case cocos2d::EventKeyboard::KeyCode::KEY_K:
-			cheems_->hurt();
-			break;
-		case cocos2d::EventKeyboard::KeyCode::KEY_L:
-			cheems_->die();
-			break;
+		//case cocos2d::EventKeyboard::KeyCode::KEY_K:
+		//	cheems_->hurt();
+		//	break;
+		//case cocos2d::EventKeyboard::KeyCode::KEY_L:
+		//	cheems_->die();
+		//	break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_O:
 			gameOver(true);
 			break;

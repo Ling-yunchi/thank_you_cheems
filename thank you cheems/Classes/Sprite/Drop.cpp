@@ -34,7 +34,7 @@ bool Drop::init(cocos2d::Vec2 soybean, cocos2d::Vec2 cheems)
 	auto v = cheems - soybean;
 	auto radians = -cocos2d::Vec2(0, -1).getAngle(v) * 57.2957;
 	setRotation(radians);
-	body->setVelocity(v / v.length() * 150);
+	body->setVelocity(v / v.length() * 180);
 
 	setOpacity(0);
 	//cocos2d::Sequence::createWithTwoActions(cocos2d::MoveBy::create(1.5, cocos2d::Vec2::ZERO), cocos2d::FadeIn::create(0.1))

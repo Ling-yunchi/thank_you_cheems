@@ -1,6 +1,5 @@
 /**
  * 游戏运行场景
- * @author wr
  */
 #pragma once
 #include "cocos2d.h"

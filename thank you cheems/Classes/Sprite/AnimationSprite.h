@@ -1,6 +1,5 @@
 /*
  * 控制运动物体动画显示的基类
- * @author wr
  */
 #pragma once
 

@@ -1,6 +1,5 @@
 /**
  * 游戏结束界面
- * @author wr
  */
 #pragma once
 #include "cocos2d.h"
