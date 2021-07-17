@@ -3,6 +3,8 @@
 
 bool Cheems::init()
 {
+	HP = 3;
+	
 	AnimationSprite::initWithNameAndSize("cheems", Size(220, 300));
 	getPhysicsBody()->setTag(CheemsTag);
 	getPhysicsBody()->setCategoryBitmask(CheemsCateoryBitmask);
@@ -57,9 +59,11 @@ Cheems* Cheems::create()
 
 void Cheems::hurt()
 {
-	ishurt = true;
-	AnimationSprite::hurt();
-	HP -= 1;
+	if(ishurt!=true) {
+		ishurt = true;
+		AnimationSprite::hurt();
+		HP -= 1;
+	}
 }
 
 void Cheems::updateTimer()

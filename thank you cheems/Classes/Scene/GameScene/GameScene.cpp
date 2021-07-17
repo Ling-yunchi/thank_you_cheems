@@ -7,7 +7,7 @@
 #include "Base/ConstValue.h"
 #include "Sprite/Drop.h"
 
-#define DEBUG
+//#define DEBUG
 
 void GameScene::loadMap()
 {
@@ -44,25 +44,22 @@ void GameScene::createSprites()
 	auto pos = map_->getObjectGroup("cheems")->getObject("cheems");
 	cheems_->setPosition(pos["x"].asFloat(), pos["y"].asFloat());
 	map_->addChild(cheems_, 999);
-	map_->setPosition(200,-400);
+	//TODO
+	map_->setPosition(200, -400);
 
-	//auto objGroup = map_->getObjectGroup("soybean");
-	//auto& objs = objGroup->getObjects();
-	//for(auto& obj : objs) {
-	//	auto& vmap = obj.asValueMap();
-	//	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
-	//	soybean->setScale(0.2);
-	//	soybean->setPosition(Vec2(vmap["x"].asFloat(), vmap["y"].asFloat()));
-	//	map_->addChild(soybean, 999);
-	//}
-	auto soybean = AnimationSprite::create("soybean", Size(300, 195));
-	soybean->setScale(0.2);
-	soybean->setPosition(VisibleRect::center());
-	map_->addChild(soybean, 999);
 
-	Drop* drop = Drop::create(soybean->getPosition(), cheems_->getPosition());
-	drop->setPosition(VisibleRect::center());
-	map_->addChild(drop);
+	auto objGroup = map_->getObjectGroup("monsters");
+	auto& objs = objGroup->getObjects();
+	int cnt = 1;
+	for (auto& obj : objs) {
+		auto& vmap = obj.asValueMap();
+		auto soybean = Monster::create();
+		soybean->setScale(0.2);
+		soybean->setPosition(Vec2(vmap["x"].asFloat(), vmap["y"].asFloat()));
+		soybean->setTag(cnt++);
+		monsters.push_back(soybean);
+		map_->addChild(soybean, 999);
+	}
 }
 
 void GameScene::createMenu()
@@ -121,7 +118,7 @@ void GameScene::createListener()
 			cheems_->jump();
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_J:
-			cheems_->attack();
+			cheems_->CheemsAttact(dir_, monsters);
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_K:
 			cheems_->hurt();
@@ -170,6 +167,17 @@ void GameScene::createListener()
 			cheems_->hurt();
 		if ((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
 			cheems_->hurt();
+		if ((tagA == AttackTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == AttackTag)) {
+			auto tag = tagA == SoybeanTag ? contact.getShapeA()->getBody()->getNode()->getTag() : contact.getShapeB()->getBody()->getNode()->getTag();
+			for (auto it = monsters.begin(); it != monsters.end();) {
+				if ((*it)->getTag() == tag)
+					monsters.erase(it++);
+				else
+					it++;
+			}
+		}
+
+
 
 		return true;
 	};
@@ -179,9 +187,9 @@ void GameScene::createListener()
 void GameScene::update(float delta)
 {
 	cheems_->updatePosition();
-	
+	cheems_->updateTimer();
+
 	moveMap();
-	updateAttack();
 	updateMonsters();
 	updateHeart();
 	judgeGameOver();
@@ -199,19 +207,17 @@ void GameScene::updateMove(int dir)
 		cheems_->move(0);
 }
 
-void GameScene::updateAttack()
-{
-	//TODO: 矩形检测
-}
-
 void GameScene::updateMonsters()
 {
 	for (auto monster : monsters) {
-
-		if (monster->getPosition().distance(cheems_->getPosition()) <= 500) {
-			addChild(Drop::create(monster->getPosition(), cheems_->getPosition()));
+		if (monster->getPosition().distance(cheems_->getPosition()) <= 150) {
+			if (!monster->IsAttack) {
+				monster->attack();
+				map_->addChild(Drop::create(monster->getPosition(), cheems_->getPosition()), 1000);
+			}
 		}
-		
+		monster->updatePosition();
+		monster->UpdateTimer();
 	}
 }
 
@@ -222,7 +228,7 @@ void GameScene::updateHeart()
 		auto heart = Sprite::create("heart.png");
 		auto empty_heart = Sprite::create("empty_heart.png");
 		for (int i = 0; i < 3; i++)
-			if (i < hp_)
+			if (i < cheems_->getHP())
 				hearts_[i]->setTexture(heart->getTexture());
 			else
 				hearts_[i]->setTexture(empty_heart->getTexture());
@@ -232,11 +238,18 @@ void GameScene::updateHeart()
 
 void GameScene::judgeGameOver()
 {
-	//if (monsters.empty())
-	//	gameOver(true);
+	if (monsters.empty())
+		gameOver(true);
 
-	//if(cheems_.getHP()==0)
-	//	gameOver(false);
+	if (cheems_->getHP() == 0) {
+		cheems_->die();
+		scheduleOnce(schedule_selector(GameScene::defeat), 3);
+	}
+}
+
+void GameScene::defeat(float dt)
+{
+	gameOver(false);
 }
 
 void GameScene::moveMap()
@@ -247,7 +260,7 @@ void GameScene::moveMap()
 	static float x = b.x;
 	static float y = b.y;
 
-	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), y - b.y)));
+	map_->runAction(MoveBy::create(0.1, Vec2((x - b.x) * map_->getScale(), (y - b.y) * map_->getScale())));
 
 	x = b.x;
 	y = b.y;
@@ -255,7 +268,7 @@ void GameScene::moveMap()
 
 void GameScene::gameOver(bool res)
 {
-	Director::getInstance()->runWithScene(GameOverScene::createScene(res));
+	Director::getInstance()->replaceScene(GameOverScene::createScene(res));
 }
 
 GameScene::GameScene() :
@@ -285,6 +298,8 @@ bool GameScene::init()
 {
 	if (!Scene::initWithPhysics())
 		return false;
+
+	getPhysicsWorld()->setGravity(Vec2(0, -980));
 
 	loadMap();
 	createSprites();

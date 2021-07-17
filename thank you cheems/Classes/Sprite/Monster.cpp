@@ -9,8 +9,10 @@ void Monster::Move()
 
 void Monster::attack()
 {
-	AnimationSprite::attack();
-	IsAttack = true;
+	if(IsAttack == false){
+		AnimationSprite::attack();
+		IsAttack = true;
+	}
 }
 
 Monster* Monster::create()
@@ -27,12 +29,14 @@ Monster* Monster::create()
 bool Monster::init()
 {
 	AnimationSprite::initWithNameAndSize("soybean", Size(300, 195));
-	setTag(SoybeanTag);
+	getPhysicsBody()->setTag(SoybeanTag);
 	getPhysicsBody()->setCategoryBitmask(SoybeanCateoryBitmask);
 	getPhysicsBody()->setCollisionBitmask(SoybeanCollisionBitmask);
 	getPhysicsBody()->setContactTestBitmask(SoybeanContactTestBitmask);
 
 	setScale(0.1);
+
+	speedX_ = 50;
 
 	return true;
 }
@@ -77,7 +81,7 @@ bool Monster::UpdateTimer()
 		Monster::Move();
 	}
 
-	int sec2 = 1;
+	int sec2 = 5;
 	if (IsAttack == true && TimerAttack < 0)
 	{
 		TimerAttack = 60 * sec2;
@@ -94,6 +98,7 @@ bool Monster::UpdateTimer()
 
 void Monster::die()
 {
+	AnimationSprite::die();
 	getPhysicsBody()->release();
 	setPhysicsBody(nullptr);
 }

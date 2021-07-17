@@ -17,7 +17,7 @@ class GameScene :public Scene
 {
 private:
 	Cheems* cheems_;
-	std::list<Sprite*> monsters;
+	std::list<Monster*> monsters;
 	Global* global_;
 	EventDispatcher* eventDispatcher_;
 	TMXTiledMap* map_;
@@ -38,13 +38,13 @@ private:
 	//¸üÐÂº¯Êý
 	void update(float delta) override;
 	void updateMove(int dir);
-	void updateAttack();
 	void updateMonsters();
 	void updateHeart();
 	void judgeGameOver();
 	void moveMap();
 	void gameOver(bool res);
 
+	void defeat(float);
 public:
 	GameScene();
 	~GameScene();
@@ -53,3 +53,5 @@ public:
 	
 	CREATE_FUNC(GameScene);
 };
+
+
