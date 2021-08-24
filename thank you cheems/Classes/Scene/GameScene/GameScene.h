@@ -25,6 +25,7 @@ private:
 
 	bool left_ = false;
 	bool right_ = false;
+	bool dieflag = true;
 	int dir_ = 0;
 	int hp_ = 0;
 	float last_x_;

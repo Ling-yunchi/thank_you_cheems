@@ -55,22 +55,22 @@ void MainMenuScene::creatMenu()
     close->enableShadow();
 
     auto startItem = MenuItemLabel::create(start, [&](Ref* sender) {
-        log("start");
+        log("start btn pushed");
         chooseSaveScene_ = SaveChooseScene::createScene();
         Director::getInstance()->pushScene(chooseSaveScene_);
     });
     auto helpItem = MenuItemLabel::create(help, [&](Ref* sender) {
-        log("help");
+        log("help btn pushed");
         helpScene_ = HelpScene::createScene();
         Director::getInstance()->pushScene(helpScene_);
     });
     auto optionItem = MenuItemLabel::create(option, [&](Ref* sender) {
-        log("options");
+        log("options btn pushed");
         OptionsScene_ = OptionsScene::createScene();
         Director::getInstance()->pushScene(OptionsScene_);
     });
     auto closeItem = MenuItemLabel::create(close, [&](Ref* sender) {
-        log("close");
+        log("close btn pushed");
         Director::getInstance()->end();
     });
 
