@@ -61,6 +61,7 @@ void GameScene::createSprites()
 		auto soybean = Monster::create();
 		soybean->setScale(0.2);
 		soybean->setPosition(Vec2(vmap["x"].asFloat(), vmap["y"].asFloat()));
+		log("create soybean tag: %d", cnt);
 		soybean->setTag(cnt++);
 		monsters.push_back(soybean);
 		map_->addChild(soybean, 999);
@@ -114,12 +115,13 @@ void GameScene::createListener()
 			updateMove(1);
 			break;
 
-		//case cocos2d::EventKeyboard::KeyCode::KEY_S:
-		//	cheems_->down();
-		//	break;
+		case cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE:
+			Director::getInstance()->pushScene(PauseScene::createScene());
+			break;
 
 		case cocos2d::EventKeyboard::KeyCode::KEY_W:
 		case cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW:
+		case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
 			cheems_->jump();
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_J:
@@ -131,12 +133,12 @@ void GameScene::createListener()
 		//case cocos2d::EventKeyboard::KeyCode::KEY_L:
 		//	cheems_->die();
 		//	break;
-		case cocos2d::EventKeyboard::KeyCode::KEY_O:
-			gameOver(true);
-			break;
-		case cocos2d::EventKeyboard::KeyCode::KEY_P:
-			gameOver(false);
-			break;
+		//case cocos2d::EventKeyboard::KeyCode::KEY_O:
+		//	gameOver(true);
+		//	break;
+		//case cocos2d::EventKeyboard::KeyCode::KEY_P:
+		//	gameOver(false);
+		//	break;
 		}
 	};
 	kbListener->onKeyReleased = [&](EventKeyboard::KeyCode code, Event* event) {
@@ -165,18 +167,25 @@ void GameScene::createListener()
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = [this](PhysicsContact& contact) {
 		int tagA = contact.getShapeA()->getBody()->getTag(), tagB = contact.getShapeB()->getBody()->getTag();
-		log("%d,%d", tagA, tagB);
-		if ((tagA == CheemsTag && tagB == GroundTag) || (tagA == GroundTag && tagB == CheemsTag))
+		log("contact:%d,%d", tagA, tagB);
+		if ((tagA == CheemsTag && tagB == GroundTag) || (tagA == GroundTag && tagB == CheemsTag)) {
+			log("cheems hit the ground");
 			cheems_->down();
-		if ((tagA == CheemsTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == CheemsTag))
+		}
+		if ((tagA == CheemsTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == CheemsTag)) {
+			log("cheems hurt by Soybean");
 			cheems_->hurt();
-		if ((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag))
+		}
+		if ((tagA == CheemsTag && tagB == DropTag) || (tagA == DropTag && tagB == CheemsTag)) {
+			log("cheems hurt by Drop");
 			cheems_->hurt();
+		}
 		if ((tagA == AttackTag && tagB == SoybeanTag) || (tagA == SoybeanTag && tagB == AttackTag)) {
 			auto tag = tagA == SoybeanTag ? contact.getShapeA()->getBody()->getNode()->getTag() : contact.getShapeB()->getBody()->getNode()->getTag();
 			for (auto it = monsters.begin(); it != monsters.end();) {
 				if ((*it)->getTag() == tag) {
 					(*it)->die();
+					log("soybean tag: %d die", tag);
 					monsters.erase(it++);
 				}
 				else
@@ -245,10 +254,12 @@ void GameScene::judgeGameOver()
 	if (monsters.empty())
 		gameOver(true);
 
-	if (cheems_->getHP() == 0) {
+	if (cheems_->getHP() == 0 && dieflag) {
 		cheems_->die();
+		log("You Die!!!");
+		dieflag = false;
 		scheduleOnce(schedule_selector(GameScene::defeat), 3);
-		cheems_->hurt();
+		//cheems_->hurt();
 	}
 }
 

@@ -193,7 +193,7 @@ void OptionsScene::creatCheckBox()
 			break;
 		case ui::Widget::TouchEventType::ENDED: {
 			bool flag = dynamic_cast<CheckBox*>(getChildByName("FPSBox"))->getSelectedState();
-			log(std::string(flag ? "false" : "true").c_str());
+			log(std::string(flag ? "FPS: false" : "FPS: true").c_str());
 			Director::getInstance()->setDisplayStats(!flag);
 			global_->displayStats = !global_->displayStats;
 			break;
